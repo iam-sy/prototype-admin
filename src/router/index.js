@@ -1,23 +1,41 @@
 import Vue from 'vue';
 import VueRouter from 'vue-router';
-import Home from '../views/Home.vue';
+
+const LoginPage = () =>
+    import(/* webpackChunkName: "loginpage" */ '../views/login/LoginPage.vue');
+const BlogList = () =>
+    import(/* webpackChunkName: "bloglist" */ '../views/blog/BlogList.vue');
+const BlogWrite = () =>
+    import(/* webpackChunkName: "blogwrite" */ '../views/blog/BlogWrite.vue');
+const BlogModify = () =>
+    import(/* webpackChunkName: "blogmodify" */ '../views/blog/BlogModify.vue');
 
 Vue.use(VueRouter);
 
 const routes = [
     {
         path: '/',
-        name: 'Home',
-        component: Home,
+        redirect: '/login',
     },
     {
-        path: '/about',
-        name: 'About',
-        // route level code-splitting
-        // this generates a separate chunk (about.[hash].js) for this route
-        // which is lazy-loaded when the route is visited.
-        component: () =>
-            import(/* webpackChunkName: "about" */ '../views/About.vue'),
+        path: '/blog/list',
+        name: 'bloglist',
+        component: BlogList,
+    },
+    {
+        path: '/blog/write',
+        name: 'blogwrite',
+        component: BlogWrite,
+    },
+    {
+        path: '/blog/modify',
+        name: 'blogmodify',
+        component: BlogModify,
+    },
+    {
+        path: '/login',
+        name: 'loginpage',
+        component: LoginPage,
     },
 ];
 
