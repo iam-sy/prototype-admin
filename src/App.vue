@@ -1,13 +1,20 @@
 <template>
     <div id="app">
-        <div id="nav">
-            <router-link to="/">Home</router-link> |
-            <router-link to="/about">About</router-link>
-        </div>
+        <Gnb></Gnb>
         <router-view />
         <Dimed></Dimed>
     </div>
 </template>
+
+<script>
+import Gnb from '@/components/layout/Gnb.vue';
+
+export default {
+    components: {
+        Gnb,
+    },
+};
+</script>
 
 <style lang="scss">
 @import '~@/scss/fonts.scss';
