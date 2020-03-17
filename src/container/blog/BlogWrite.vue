@@ -4,14 +4,25 @@
             <div class="board-write__editor">
                 <div class="board-write__editflex">
                     <div class="board-write__title">
-                        <input
-                            type="text"
-                            name="inp__tit"
-                            id="inp__tit"
-                            title="제목 입력"
-                            placeholder="제목을 입력하세요"
-                            v-model="title"
-                        />
+                        <ValidationProvider
+                            rules="required"
+                            v-slot="{ errors, failedRules }"
+                            tag="div"
+                            mode="eager"
+                        >
+                            <input
+                                type="text"
+                                name="inp__tit"
+                                id="inp__tit"
+                                title="제목 입력"
+                                placeholder="제목을 입력하세요"
+                                v-model="title"
+                            />
+
+                            <p class="is-error" v-if="failedRules.required">
+                                제목을 입력하세요.
+                            </p>
+                        </ValidationProvider>
                     </div>
                     <div class="board-write__tags">
                         <TagEditor :tags.sync="tags"></TagEditor>

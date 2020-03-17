@@ -54,7 +54,7 @@ export default {
         display: table;
         font-size: 0;
         button {
-            @include tagItem();
+            @include tagButton();
         }
     }
 }

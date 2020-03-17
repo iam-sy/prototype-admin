@@ -10,6 +10,9 @@
                 ref="fileinput"
             />
         </form>
+        <p class="code-editor__desc">
+            ※ 편집중 esc키를 누르시면 편집모드가 종료됩니다.
+        </p>
         <vue-simplemde
             ref="markdownEditor"
             :value="content"
@@ -17,6 +20,12 @@
             @input="handleInput"
             preview-class="markdown-body"
         />
+        <div
+            class="code-editor__end"
+            aria-hidden="true"
+            tabindex="-1"
+            ref="editEnd"
+        ></div>
     </div>
 </template>
 
@@ -124,6 +133,7 @@ export default {
         },
     },
     mounted() {
+        const self = this;
         const editor = this.$refs.markdownEditor;
         const simplemde = editor.simplemde;
         for (let tool in simplemde.toolbarElements) {
@@ -132,8 +142,11 @@ export default {
         simplemde.codemirror.tabSize = 4;
         if (this.disableTab) {
             simplemde.codemirror.options.extraKeys.Tab = false;
-            simplemde.codemirror.options.extraKeys['Shift-Tab'] = false;
         }
+        simplemde.codemirror.options.extraKeys['Shift-Tab'] = false;
+        simplemde.codemirror.options.extraKeys.Esc = function(cm) {
+            self.$refs.editEnd.focus();
+        };
         this.$refs.fileinput.addEventListener('change', e => {
             this.uploadImagesFile(simplemde, [e.target.files[0]]);
         });
@@ -174,6 +187,11 @@ export default {
 .code-editor {
     flex: 1 1 0%;
     min-height: 0;
+    &__desc {
+        font-size: 12px;
+        color: #666;
+        margin-bottom: 10px;
+    }
     .CodeMirror-scroll {
         box-sizing: content-box;
     }
@@ -182,7 +200,7 @@ export default {
         flex-direction: column;
         display: flex;
         min-height: 0;
-        height: 100%;
+        height: calc(100% - 22px);
     }
     .CodeMirror,
     .CodeMirror-scroll {

@@ -1,12 +1,12 @@
 <template>
     <div class="code-viewer markdown-body">
         <h1 content="code-viewer__title" v-if="title">{{ title }}</h1>
-        <div class="board-write__pre-tags" v-if="tags.length > 0">
+        <div class="code-viewer__tags" v-if="tags.length > 0">
             <span type="button" v-for="(tag, index) in tags" :key="index">
-                # {{ tag }}
+                {{ tag }}
             </span>
         </div>
-        <div class="board-write__pre-content" v-html="parseHtml"></div>
+        <div class="code-viewer__content" v-html="parseHtml"></div>
     </div>
 </template>
 
@@ -45,4 +45,15 @@ export default {
 };
 </script>
 
-<style scoped></style>
+<style scoped lang="scss">
+.code-viewer {
+    &__tags {
+        display: table;
+        font-size: 0;
+        width: 100%;
+        span {
+            @include tagItem();
+        }
+    }
+}
+</style>
