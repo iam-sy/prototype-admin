@@ -1,11 +1,14 @@
 <template>
-    <div>
-        BlogWrite
-    </div>
+    <BlogWrite></BlogWrite>
 </template>
 
 <script>
-export default {};
+import BlogWrite from '@/container/blog/BlogWrite.vue';
+export default {
+    components: {
+        BlogWrite,
+    },
+};
 </script>
 
 <style scoped></style>
