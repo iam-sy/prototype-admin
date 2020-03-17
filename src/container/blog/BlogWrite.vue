@@ -32,9 +32,10 @@
                 ></CodeViewer>
             </div>
         </div>
-        <div class="board-write__control">
-            <button type="button"><span>취소</span></button>
-            <button type="button" @click="submitPost">
+
+        <div class="board-write__control cta-wrap">
+            <button type="button" class="cta"><span>취소</span></button>
+            <button type="button" @click="submitPost" class="cta cta--green">
                 <span>등록</span>
             </button>
         </div>
@@ -89,27 +90,16 @@ export default {
 
 <style scoped lang="scss">
 .board-write {
+    padding: 60px;
     display: flex;
-    height: calc(100vh - 56px - 100px);
+    height: calc(100vh - 56px);
     flex-direction: column;
     input {
-        font-family: 'Noto Sans KR';
-        font-size: 32px;
-        border: {
-            width: 0 0 1px 0;
-            style: solid;
-            color: #eaecef;
-        }
-        background: transparent;
-        width: 100%;
-        &::placeholder {
-            font-size: 32px;
-            color: $color3;
-        }
+        @include input();
     }
     &__body {
         width: 100%;
-        height: 100%;
+        height: calc(100% - 60px;);
         display: flex;
     }
     &__editor,
@@ -132,7 +122,7 @@ export default {
 
     &__preview {
         margin-left: 30px;
-        height: calc(100vh - 56px - 100px);
+        height: 100%;
         overflow: auto;
     }
     &__control {

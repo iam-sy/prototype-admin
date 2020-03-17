@@ -1,0 +1,63 @@
+@mixin input($fz: 32px) {
+    font-family: 'Noto Sans KR';
+    font-size: $fz;
+    border: {
+        width: 0 0 1px 0;
+        style: solid;
+        color: #eaecef;
+    }
+    background: transparent;
+    width: 100%;
+    &::placeholder {
+        font-size: $fz;
+        color: $color3;
+    }
+}
+
+@mixin tagItem() {
+    display: inline-block;
+    background-color: $color4;
+    color: $color1;
+    border: none;
+    border-radius: 15px;
+    height: 30px;
+    padding: 0 20px;
+    font-weight: 500;
+    font-size: 14px;
+    margin-top: 10px;
+    &:not(:last-child) {
+        margin-right: 10px;
+    }
+}
+
+@mixin button() {
+    .cta-wrap {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+    }
+    .cta {
+        font-family: 'Noto Sans KR';
+        display: inline-block;
+        background: $color4;
+        border: none;
+        border-radius: 20px;
+        text-align: center;
+        min-height: 30px;
+        span {
+            display: block;
+            padding: 0 10px;
+            em {
+                font-style: normal;
+            }
+        }
+        &--green {
+            background: $color8;
+            color: #fff;
+        }
+        &:not(:first-child) {
+            margin-left: 10px;
+        }
+    }
+}

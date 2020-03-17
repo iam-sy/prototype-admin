@@ -11,7 +11,7 @@
 <style scoped lang="scss">
 .nav {
     background-color: #4f4f4f;
-    padding: 20px;
+    padding: 20px 60px;
     display: flex;
     align-items: center;
     justify-content: space-between;
