@@ -5,28 +5,17 @@
             <router-link to="/about">About</router-link>
         </div>
         <router-view />
+        <Dimed></Dimed>
     </div>
 </template>
 
 <style lang="scss">
-#app {
-    font-family: Avenir, Helvetica, Arial, sans-serif;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-    text-align: center;
-    color: #2c3e50;
-}
+@import '~@/scss/fonts.scss';
+@import '~@/scss/common.scss';
+@import '~@/scss/github-markdown.scss';
+@import '~simplemde/dist/simplemde.min.css';
 
-#nav {
-    padding: 30px;
-
-    a {
-        font-weight: bold;
-        color: #2c3e50;
-
-        &.router-link-exact-active {
-            color: #42b983;
-        }
-    }
+.markdown-body {
+    @import '~@/scss/prism-dracula';
 }
 </style>
