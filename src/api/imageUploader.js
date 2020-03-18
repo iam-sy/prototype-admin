@@ -19,9 +19,12 @@ export function uploadImage(simplemde, params) {
                 if (status !== 200) {
                     continue;
                 }
-                let url = `![](${constants.apiAdress}/uploads/${resData.filename})`;
-                let content = simplemde.value();
-                simplemde.value(content + url + '\n');
+                const path = resData.destination.replace('public/', '');
+                let url = `![](${constants.apiAdress}/${path}/${resData.filename})`;
+                if (simplemde) {
+                    let content = simplemde.value();
+                    simplemde.value(content + url + '\n');
+                }
             }
         }),
     );

@@ -6,6 +6,12 @@
                 {{ tag }}
             </span>
         </div>
+        <div class="code-viewer__sumnail" v-if="sumnail">
+            <img :src="image" />
+        </div>
+        <div class="code-viewer__desc" v-if="desc">
+            {{ desc }}
+        </div>
         <div class="code-viewer__content" v-html="parseHtml"></div>
     </div>
 </template>
@@ -25,7 +31,32 @@ import 'prismjs/components/prism-twig.min';
 import 'prismjs/components/prism-tsx.min';
 
 export default {
-    props: ['tags', 'title', 'content'],
+    props: ['tags', 'title', 'content', 'sumnail', 'desc'],
+    data() {
+        return {
+            image: '',
+        };
+    },
+    watch: {
+        sumnail() {
+            if (!this.sumnail) return;
+            var reader = new FileReader();
+            reader.onload = e => {
+                this.image = e.target.result;
+            };
+            reader.readAsDataURL(this.sumnail);
+        },
+    },
+    methods: {
+        createImage(file) {
+            var image = new Image();
+            var reader = new FileReader();
+            reader.onload = e => {
+                this.image = e.target.result;
+            };
+            reader.readAsDataURL(file);
+        },
+    },
     computed: {
         parseHtml() {
             marked.setOptions({
@@ -51,9 +82,14 @@ export default {
         display: table;
         font-size: 0;
         width: 100%;
+        padding-bottom: 10px;
         span {
             @include tagItem();
         }
+    }
+    &__desc,
+    &__sumnail {
+        padding-bottom: 10px;
     }
 }
 </style>

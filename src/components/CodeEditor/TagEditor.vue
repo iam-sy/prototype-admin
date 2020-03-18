@@ -2,6 +2,7 @@
     <div class="tag-input">
         <div class="tag-input__input">
             <input
+                autocomplete="off"
                 @keydown.prevent.13.188="addTag"
                 type="text"
                 name="inp__tags"

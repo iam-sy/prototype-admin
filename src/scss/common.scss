@@ -144,6 +144,13 @@ a {
     }
 }
 
+textarea {
+    width: 100%;
+    min-height: 100px;
+    resize: none;
+    border: 1px solid #ddd;
+}
+
 .screen-lock {
     overflow: hidden;
     position: fixed;
