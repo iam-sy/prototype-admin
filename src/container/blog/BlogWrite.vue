@@ -3,27 +3,39 @@
         <div class="board-write__body">
             <div class="board-write__editor">
                 <div class="board-write__editflex">
-                    <div class="board-write__title">
-                        <ValidationProvider
-                            rules="required"
-                            v-slot="{ errors, failedRules }"
-                            tag="div"
-                            mode="eager"
-                        >
-                            <input
-                                autocomplete="off"
-                                type="text"
-                                name="inp__tit"
-                                id="inp__tit"
-                                title="제목 입력"
-                                placeholder="제목을 입력하세요"
-                                v-model="title"
-                            />
+                    <div class="board-write__head">
+                        <div class="board-write__sec">
+                            <select
+                                id="sel_sec"
+                                title="section 선택"
+                                @change="secSelect"
+                            >
+                                <option value="review">review</option>
+                                <option value="study">study</option>
+                            </select>
+                        </div>
+                        <div class="board-write__title">
+                            <ValidationProvider
+                                rules="required"
+                                v-slot="{ errors, failedRules }"
+                                tag="div"
+                                mode="eager"
+                            >
+                                <input
+                                    autocomplete="off"
+                                    type="text"
+                                    name="inp__tit"
+                                    id="inp__tit"
+                                    title="제목 입력"
+                                    placeholder="제목을 입력하세요"
+                                    v-model="title"
+                                />
 
-                            <p class="is-error" v-if="failedRules.required">
-                                제목을 입력하세요.
-                            </p>
-                        </ValidationProvider>
+                                <p class="is-error" v-if="failedRules.required">
+                                    제목을 입력하세요.
+                                </p>
+                            </ValidationProvider>
+                        </div>
                     </div>
                     <div class="board-write__tags">
                         <TagEditor :tags.sync="tags"></TagEditor>
@@ -84,6 +96,7 @@ export default {
     name: 'BlogWrite',
     data() {
         return {
+            sec: 'review',
             title: '',
             tags: [],
             desc: '',
@@ -104,6 +117,7 @@ export default {
             param.append('title', this.title);
             param.append('content', this.content);
             param.append('tags', this.tags);
+            param.append('sec', this.sec);
 
             try {
                 const res = await createPost(param);
@@ -112,6 +126,9 @@ export default {
                 if (e.response.data.message)
                     this.logMessage = e.response.data.message;
             }
+        },
+        secSelect(e) {
+            this.sec = e.target.value;
         },
         cancelPost() {
             this.$router.push('/blog/list');
@@ -132,7 +149,13 @@ export default {
     display: flex;
     height: calc(100vh - 56px);
     flex-direction: column;
+
+    &__head {
+        display: flex;
+        align-items: center;
+    }
     &__title {
+        margin-left: 20px;
         input {
             @include input();
         }
