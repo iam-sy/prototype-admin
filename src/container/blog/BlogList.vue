@@ -87,7 +87,6 @@ export default {
     },
     methods: {
         secUpdate(data) {
-            console.log(data);
             this.sec = data;
         },
         async fetchData() {
@@ -104,7 +103,6 @@ export default {
         },
     },
     created() {
-        this.sec = this.$route.params.sec;
         this.fetchData();
     },
 };
