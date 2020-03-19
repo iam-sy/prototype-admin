@@ -1,11 +1,12 @@
 <template>
-    <div>
-        BlogList
-    </div>
+    <BlogList></BlogList>
 </template>
 
 <script>
-export default {};
+import BlogList from '@/container/blog/BlogList.vue';
+export default {
+    components: {
+        BlogList,
+    },
+};
 </script>
-
-<style scoped></style>
