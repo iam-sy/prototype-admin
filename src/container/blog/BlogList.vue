@@ -14,8 +14,10 @@
                     </li>
                 </ul>
 
-                <div class="blog-list__more">
-                    <Button></Button>
+                <div class="blog-list__more cta-wrap">
+                    <router-link to="/blog/write" class="cta">
+                        <span>글쓰기</span>
+                    </router-link>
                 </div>
             </div>
             <div class="blog-list__quick">
@@ -72,7 +74,6 @@ export default {
         BlogCard,
         Title,
         Menu,
-        Button,
     },
     data() {
         return {
@@ -121,13 +122,21 @@ export default {
         position: relative;
     }
     &__list {
+        overflow: hidden;
         ul {
+            margin-left: -30px;
             margin-right: 215px;
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(290px, 1fr));
-            grid-gap: 30px 26px;
+            display: flex;
+            flex-wrap: wrap;
+            //display: grid;
+            //grid-template-columns: repeat(auto-fill, minmax(290px, 1fr));
+            //grid-gap: 30px 26px;
         }
         li {
+            flex: none;
+            width: 100%;
+            margin-left: 30px;
+            max-width: 280px;
             padding-top: 25px;
             list-style-type: none;
         }

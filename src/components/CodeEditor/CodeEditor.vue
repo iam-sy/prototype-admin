@@ -153,10 +153,7 @@ export default {
 
         simplemde.codemirror.on('paste', (editor, e) => {
             if (!(e.clipboardData && e.clipboardData.items)) {
-                this.$message({
-                    message: 'error',
-                    type: 'error',
-                });
+                console.log(e);
                 return;
             }
             try {
@@ -169,10 +166,7 @@ export default {
                     this.uploadImagesFile(simplemde, [dataList[0].getAsFile()]);
                 }
             } catch (e) {
-                this.$message({
-                    message: 'error',
-                    type: 'error',
-                });
+                console.log(e);
             }
         });
     },

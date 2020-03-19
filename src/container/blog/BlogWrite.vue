@@ -121,7 +121,7 @@ export default {
 
             try {
                 const res = await createPost(param);
-                //this.$router.push('/blog/list');
+                this.$router.push('/blog/list');
             } catch (e) {
                 if (e.response.data.message)
                     this.logMessage = e.response.data.message;
@@ -155,6 +155,7 @@ export default {
         align-items: center;
     }
     &__title {
+        width: 100%;
         margin-left: 20px;
         input {
             @include input();

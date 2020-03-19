@@ -44,10 +44,13 @@
         border: none;
         border-radius: 20px;
         text-align: center;
-        min-height: 30px;
+        height: 30px;
+
         span {
-            display: block;
-            padding: 0 10px;
+            display: flex;
+            height: 100%;
+            align-items: center;
+            padding: 0 20px;
             em {
                 font-style: normal;
             }

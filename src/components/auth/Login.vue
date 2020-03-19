@@ -134,9 +134,6 @@ export default {
                 }
                 console.log('success');
                 this.resetForm();
-                this.$nextTick(() => {
-                    this.$refs.form.reset();
-                });
             });
         },
         changMode() {

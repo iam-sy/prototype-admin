@@ -9,7 +9,7 @@
                 {{ post.desc }}
             </div>
             <div class="blog-card__date">2018.11.11</div>
-            <div class="blog-card__tags" v-if="post.tags.length > 0">
+            <div class="blog-card__tags" v-if="post.tags.length > 1">
                 <ul>
                     <li v-for="(index, tag) in post.tags" :key="index">
                         {{ post.tags[tag] }}
@@ -86,7 +86,7 @@ export default {
         width: 100%;
         bottom: 0;
         left: 0;
-        height: 37px;
+        min-height: 37px;
         border-top: 1px solid #f8f8f8;
         ul {
             padding-top: 12px;
@@ -99,6 +99,7 @@ export default {
             display: inline-block;
             vertical-align: middle;
             padding-left: 15px;
+            padding-bottom: 10px;
             font-family: 'Noto Sans KR';
             font-size: 12px;
             list-style-type: none;
@@ -107,8 +108,8 @@ export default {
                 image: url('~@/assets/ico-tag.svg');
                 repeat: no-repeat;
             }
-            &:not(:first-child) {
-                margin-left: 10px;
+            &:not(:last-child) {
+                margin-right: 10px;
             }
         }
     }
