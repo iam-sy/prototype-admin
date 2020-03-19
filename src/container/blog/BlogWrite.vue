@@ -2,68 +2,83 @@
     <div class="board-write">
         <div class="board-write__body">
             <div class="board-write__editor">
-                <div class="board-write__editflex">
-                    <div class="board-write__head">
-                        <div class="board-write__sec">
-                            <select
-                                id="sel_sec"
-                                title="section 선택"
-                                @change="secSelect"
-                            >
-                                <option value="review">review</option>
-                                <option value="study">study</option>
-                            </select>
+                <ValidationObserver ref="form">
+                    <div class="board-write__editflex">
+                        <div class="board-write__head">
+                            <div class="board-write__sec">
+                                <select
+                                    id="sel_sec"
+                                    title="section 선택"
+                                    @change="secSelect"
+                                >
+                                    <option value="review">review</option>
+                                    <option value="study">study</option>
+                                </select>
+                            </div>
+                            <div class="board-write__title">
+                                <ValidationProvider
+                                    rules="required"
+                                    v-slot="{ errors, failedRules }"
+                                    tag="div"
+                                    mode="eager"
+                                >
+                                    <input
+                                        autocomplete="off"
+                                        type="text"
+                                        name="inp__tit"
+                                        id="inp__tit"
+                                        title="제목 입력"
+                                        placeholder="제목을 입력하세요"
+                                        v-model="title"
+                                    />
+
+                                    <p
+                                        class="is-error"
+                                        v-if="failedRules.required"
+                                    >
+                                        제목을 입력하세요.
+                                    </p>
+                                </ValidationProvider>
+                            </div>
                         </div>
-                        <div class="board-write__title">
+                        <div class="board-write__tags">
+                            <TagEditor :tags.sync="tags"></TagEditor>
+                        </div>
+                        <div class="board-write__sumnail">
+                            <input
+                                type="file"
+                                title="첨부파일 선택"
+                                accept=".gif, .jpg, .png"
+                                ref="fileinput"
+                                @change="sumnailFile"
+                                autocomplete="off"
+                            />
+                        </div>
+                        <div class="board-write__desc">
                             <ValidationProvider
                                 rules="required"
                                 v-slot="{ errors, failedRules }"
                                 tag="div"
                                 mode="eager"
                             >
-                                <input
-                                    autocomplete="off"
-                                    type="text"
-                                    name="inp__tit"
-                                    id="inp__tit"
-                                    title="제목 입력"
-                                    placeholder="제목을 입력하세요"
-                                    v-model="title"
-                                />
-
+                                <textarea
+                                    title="요약설명 입력"
+                                    v-model="desc"
+                                ></textarea>
                                 <p class="is-error" v-if="failedRules.required">
-                                    제목을 입력하세요.
+                                    요약설명을 입력하세요.
                                 </p>
                             </ValidationProvider>
                         </div>
+                        <div class="board-write__code-editor">
+                            <CodeEditor
+                                ref="codeEditor"
+                                v-model="content"
+                                @update="contentUpdate"
+                            ></CodeEditor>
+                        </div>
                     </div>
-                    <div class="board-write__tags">
-                        <TagEditor :tags.sync="tags"></TagEditor>
-                    </div>
-                    <div class="board-write__sumnail">
-                        <input
-                            type="file"
-                            title="첨부파일 선택"
-                            accept=".gif, .jpg, .png"
-                            ref="fileinput"
-                            @change="sumnailFile"
-                            autocomplete="off"
-                        />
-                    </div>
-                    <div class="board-write__desc">
-                        <textarea
-                            title="요약설명 입력"
-                            v-model="desc"
-                        ></textarea>
-                    </div>
-                    <div class="board-write__code-editor">
-                        <CodeEditor
-                            ref="codeEditor"
-                            v-model="content"
-                            @update="contentUpdate"
-                        ></CodeEditor>
-                    </div>
-                </div>
+                </ValidationObserver>
             </div>
             <div class="board-write__preview">
                 <CodeViewer
@@ -111,6 +126,9 @@ export default {
     },
     methods: {
         async submitPost() {
+            const valid = await this.$refs.form.validate();
+            if (!valid) return;
+
             let param = new FormData();
             param.append('sumnail', this.sumnail);
             param.append('desc', this.desc);
