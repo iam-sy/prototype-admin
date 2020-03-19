@@ -1,19 +1,19 @@
 <template>
     <router-link to="#lnk">
         <div class="blog-card">
-            <div class="blog-card__sumnail">
-                <img src="@/assets/@sumnail-genesis.png" alt="" />
+            <div class="blog-card__sumnail" v-if="post.sumnail !== ''">
+                <img :src="addressCompile" alt="" />
             </div>
-            <div class="blog-card__title">Genesis Owners</div>
-            <div class="blog-card__desc">
-                나는 보통 재능이나 공부의 양으로 친구들의 성장 속 도를 따라가기
-                힘들었다...
+            <div class="blog-card__title">{{ post.title }}</div>
+            <div class="blog-card__desc" v-if="post.desc">
+                {{ post.desc }}
             </div>
             <div class="blog-card__date">2018.11.11</div>
-            <div class="blog-card__tags">
+            <div class="blog-card__tags" v-if="post.tags.length > 0">
                 <ul>
-                    <li>Project</li>
-                    <li>Javascript</li>
+                    <li v-for="(index, tag) in post.tags" :key="index">
+                        {{ post.tags[tag] }}
+                    </li>
                 </ul>
             </div>
         </div>
@@ -21,7 +21,17 @@
 </template>
 
 <script>
-export default {};
+import constants from '../../../common/config';
+
+export default {
+    props: ['post'],
+    computed: {
+        addressCompile() {
+            const url = `${constants.apiAdress}${this.post.sumnail}`;
+            return url;
+        },
+    },
+};
 </script>
 
 <style scoped lang="scss">
@@ -40,7 +50,7 @@ export default {};
             position: absolute;
             left: 50%;
             top: 50%;
-            min-width: 100%;
+            width: 100%;
             transform: translate(-50%, -50%);
         }
     }

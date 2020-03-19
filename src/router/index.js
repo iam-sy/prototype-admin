@@ -18,7 +18,7 @@ const routes = [
         redirect: '/login',
     },
     {
-        path: '/blog/list',
+        path: '/blog/list/:sec',
         name: 'bloglist',
         component: BlogList,
     },

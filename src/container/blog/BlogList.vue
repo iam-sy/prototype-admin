@@ -4,28 +4,13 @@
             <Title tit=".logs"></Title>
         </div>
         <div class="blog-list__menu">
-            <Menu></Menu>
+            <Menu :sec="sec" @secUpdate="secUpdate"></Menu>
         </div>
         <div class="blog-list__main">
             <div class="blog-list__list">
                 <ul>
-                    <li>
-                        <BlogCard></BlogCard>
-                    </li>
-                    <li>
-                        <BlogCard></BlogCard>
-                    </li>
-                    <li>
-                        <BlogCard></BlogCard>
-                    </li>
-                    <li>
-                        <BlogCard></BlogCard>
-                    </li>
-                    <li>
-                        <BlogCard></BlogCard>
-                    </li>
-                    <li>
-                        <BlogCard></BlogCard>
+                    <li v-for="post in postItems" :key="post._id">
+                        <BlogCard :post="post"></BlogCard>
                     </li>
                 </ul>
 
@@ -79,12 +64,48 @@ import Title from '@/components/common/Title';
 import Button from '@/components/common/Button.vue';
 import Menu from '@/components/blog/Menu';
 import BlogCard from '@/components/blog/BlogCard.vue';
+
+import { fetchPosts } from '@/api/posts.js';
+
 export default {
     components: {
         BlogCard,
         Title,
         Menu,
         Button,
+    },
+    data() {
+        return {
+            sec: 'all',
+            postItems: null,
+        };
+    },
+    watch: {
+        sec() {
+            this.fetchData();
+        },
+    },
+    methods: {
+        secUpdate(data) {
+            console.log(data);
+            this.sec = data;
+        },
+        async fetchData() {
+            const sec = this.sec;
+            try {
+                const {
+                    data: { posts: postItems },
+                } = await fetchPosts(sec);
+                this.postItems = postItems;
+                return;
+            } catch (error) {
+                console.log(error);
+            }
+        },
+    },
+    created() {
+        this.sec = this.$route.params.sec;
+        this.fetchData();
     },
 };
 </script>

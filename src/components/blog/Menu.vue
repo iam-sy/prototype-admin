@@ -1,21 +1,41 @@
 <template>
     <div class="menu">
-        <router-link to="#lnk" class="menu__button">
+        <button
+            type="button"
+            class="menu__button"
+            value="all"
+            @click="secSelect"
+        >
             <span>.all</span>
-        </router-link>
-        <router-link to="#lnk" class="menu__button">
+        </button>
+        <button
+            type="button"
+            class="menu__button"
+            value="review"
+            @click="secSelect"
+        >
             <span>.review</span>
-        </router-link>
-        <router-link to="#lnk" class="menu__button">
+        </button>
+        <button
+            type="button"
+            class="menu__button"
+            value="study"
+            @click="secSelect"
+        >
             <span>.study</span>
-        </router-link>
+        </button>
         <div class="menu__line" aria-hidden="true"></div>
     </div>
 </template>
 
 <script>
 export default {
-    porps: {},
+    porps: ['sec'],
+    methods: {
+        secSelect(e) {
+            this.$emit('secUpdate', e.currentTarget.value);
+        },
+    },
 };
 </script>
 
