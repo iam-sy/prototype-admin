@@ -83,7 +83,7 @@
             <div class="board-write__preview">
                 <CodeViewer
                     :desc="desc"
-                    :image="image"
+                    :image="base64"
                     :content="content"
                     :title="title"
                     :tags="tags"

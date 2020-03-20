@@ -21,7 +21,7 @@ function editPostById(id, data) {
 }
 
 function deletePostById(id) {
-    return instance.delete(id);
+    return instance.delete(`/api/post/${id}`);
 }
 
 export { createPost, fetchPosts, fetchPostById, editPostById, deletePostById };

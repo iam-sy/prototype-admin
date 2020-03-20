@@ -59,6 +59,10 @@
             background: $color8;
             color: #fff;
         }
+        &--dark {
+            background: $color5;
+            color: #fff;
+        }
         &:not(:first-child) {
             margin-left: 10px;
         }
