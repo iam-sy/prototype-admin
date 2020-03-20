@@ -13,11 +13,11 @@ function fetchPosts(sec) {
 }
 
 function fetchPostById(id) {
-    return instance.get(id);
+    return instance.get(`/api/post/${id}`);
 }
 
 function editPostById(id, data) {
-    return instance.put(id, data);
+    return instance.put(`/api/post/${id}`, data);
 }
 
 function deletePostById(id) {

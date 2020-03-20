@@ -13,7 +13,6 @@
                         <BlogCard :post="post"></BlogCard>
                     </li>
                 </ul>
-
                 <div class="blog-list__more cta-wrap">
                     <router-link to="/blog/write" class="cta">
                         <span>글쓰기</span>

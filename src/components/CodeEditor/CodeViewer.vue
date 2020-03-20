@@ -8,7 +8,7 @@
                 {{ tag }}
             </span>
         </div>
-        <div class="code-viewer__sumnail" v-if="sumnail">
+        <div class="code-viewer__sumnail" v-if="image">
             <img :src="image" />
         </div>
         <div class="code-viewer__desc" v-if="desc">
@@ -33,32 +33,7 @@ import 'prismjs/components/prism-twig.min';
 import 'prismjs/components/prism-tsx.min';
 
 export default {
-    props: ['tags', 'title', 'content', 'sumnail', 'desc'],
-    data() {
-        return {
-            image: '',
-        };
-    },
-    watch: {
-        sumnail() {
-            if (!this.sumnail) return;
-            var reader = new FileReader();
-            reader.onload = e => {
-                this.image = e.target.result;
-            };
-            reader.readAsDataURL(this.sumnail);
-        },
-    },
-    methods: {
-        createImage(file) {
-            var image = new Image();
-            var reader = new FileReader();
-            reader.onload = e => {
-                this.image = e.target.result;
-            };
-            reader.readAsDataURL(file);
-        },
-    },
+    props: ['tags', 'title', 'content', 'image', 'desc'],
     computed: {
         parseHtml() {
             marked.setOptions({

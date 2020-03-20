@@ -1,7 +1,7 @@
 <template>
-    <router-link to="#lnk">
+    <router-link :to="`/blog/${post._id}`">
         <div class="blog-card">
-            <div class="blog-card__sumnail" v-if="post.sumnail !== ''">
+            <div class="blog-card__sumnail" v-if="post.image">
                 <img :src="addressCompile" alt="" />
             </div>
             <div class="blog-card__title">{{ post.title }}</div>
@@ -9,7 +9,7 @@
                 {{ post.desc }}
             </div>
             <div class="blog-card__date">2018.11.11</div>
-            <div class="blog-card__tags" v-if="post.tags.length > 1">
+            <div class="blog-card__tags" v-if="post.tags.length > 0">
                 <ul>
                     <li v-for="(index, tag) in post.tags" :key="index">
                         {{ post.tags[tag] }}
@@ -21,14 +21,12 @@
 </template>
 
 <script>
-import constants from '../../../common/config';
-
+import { imagePath } from '@/utils/parser';
 export default {
     props: ['post'],
     computed: {
         addressCompile() {
-            const url = `${constants.apiAdress}${this.post.sumnail}`;
-            return url;
+            return imagePath(this.post.image);
         },
     },
 };

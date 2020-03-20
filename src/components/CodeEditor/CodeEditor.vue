@@ -170,6 +170,9 @@ export default {
             }
         });
     },
+    created() {
+        console.log('content', this.content);
+    },
     beforeDestroy() {
         this.$refs.fileinput.removeEventListener('change', null);
         this.$refs.fileinput.removeEventListener('paste', null);

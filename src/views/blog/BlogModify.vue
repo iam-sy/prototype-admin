@@ -1,11 +1,16 @@
 <template>
     <div>
-        BlogModify
+        <BlogModify></BlogModify>
     </div>
 </template>
 
 <script>
-export default {};
+import BlogModify from '@/container/blog/BlogModify.vue';
+export default {
+    components: {
+        BlogModify,
+    },
+};
 </script>
 
 <style scoped></style>

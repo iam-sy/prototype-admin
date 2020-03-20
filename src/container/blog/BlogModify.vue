@@ -73,7 +73,7 @@
                         <div class="board-write__code-editor">
                             <CodeEditor
                                 ref="codeEditor"
-                                v-model="content"
+                                :content.sync="content"
                                 @update="contentUpdate"
                             ></CodeEditor>
                         </div>
@@ -83,7 +83,7 @@
             <div class="board-write__preview">
                 <CodeViewer
                     :desc="desc"
-                    :image="image"
+                    :image="addressCompile"
                     :content="content"
                     :title="title"
                     :tags="tags"
@@ -102,12 +102,13 @@
     </div>
 </template>
 <script>
-import { createPost } from '@/api/index';
+import { imagePath } from '@/utils/parser';
+import { fetchPostById, editPostById } from '@/api/index';
 import TagEditor from '@/components/CodeEditor/TagEditor';
 import CodeEditor from '@/components/CodeEditor/CodeEditor';
 import CodeViewer from '@/components/CodeEditor/CodeViewer';
 export default {
-    name: 'BlogWrite',
+    name: 'BlogModify',
     data() {
         return {
             sec: 'review',
@@ -115,8 +116,8 @@ export default {
             tags: [],
             desc: '',
             sumnail: '',
-            base64: '',
             image: '',
+            base64: '',
             content: '',
         };
     },
@@ -131,10 +132,22 @@ export default {
         },
     },
     methods: {
+        setForm({ posts: { sec, title, image, tags, desc, content } }) {
+            this.sec = sec;
+            this.title = title;
+            this.image = image;
+            this.tags = tags;
+            this.desc = desc;
+            this.content = content;
+            console.log(this._data);
+        },
+
         async submitPost() {
             const valid = await this.$refs.form.validate();
             if (!valid) return;
+
             let param = new FormData();
+            param.append('image', this.image);
             param.append('sumnail', this.sumnail);
             param.append('desc', this.desc);
             param.append('title', this.title);
@@ -143,7 +156,8 @@ export default {
             param.append('sec', this.sec);
 
             try {
-                const res = await createPost(param);
+                const id = this.$route.params.id;
+                const res = await editPostById(id, param);
                 this.$router.push('/blog/list');
             } catch (e) {
                 if (e.response.data.message)
@@ -170,6 +184,24 @@ export default {
             };
             reader.readAsDataURL(file);
         },
+        isBase64(str) {
+            try {
+                return btoa(str);
+            } catch (err) {
+                return false;
+            }
+        },
+    },
+    computed: {
+        addressCompile() {
+            const imgPath = this.sumnail ? this.base64 : imagePath(this.image);
+            return imgPath;
+        },
+    },
+    async created() {
+        const id = this.$route.params.id;
+        const { data } = await fetchPostById(id);
+        this.setForm(data);
     },
 };
 </script>
