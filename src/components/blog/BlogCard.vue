@@ -8,7 +8,7 @@
             <div class="blog-card__desc" v-if="post.desc">
                 {{ post.desc }}
             </div>
-            <div class="blog-card__date">2018.11.11</div>
+            <div class="blog-card__date">{{ post.createdAt | formatDate }}</div>
             <div class="blog-card__tags" v-if="post.tags.length > 0">
                 <ul>
                     <li v-for="(index, tag) in post.tags" :key="index">

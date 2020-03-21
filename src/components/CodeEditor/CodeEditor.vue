@@ -204,6 +204,12 @@ export default {
         min-height: 0;
         height: 100%;
     }
+    .CodeMirror-code {
+        line-height: 1.25;
+        pre {
+            line-height: 1.5;
+        }
+    }
     &__file {
         position: absolute;
         left: -999em;

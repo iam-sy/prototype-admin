@@ -7,6 +7,7 @@ import Dimed from '@/plugins/dimed/index';
 import Modal from '@/plugins/modal/index';
 import { ValidationObserver, ValidationProvider, extend } from 'vee-validate';
 import { required, email } from 'vee-validate/dist/rules';
+import { formatDate } from '@/utils/parser';
 
 Vue.config.productionTip = false;
 Vue.component('ValidationProvider', ValidationProvider);
@@ -31,6 +32,8 @@ extend('minmax', {
 });
 Vue.use(Dimed);
 Vue.use(Modal);
+Vue.filter('formatDate', formatDate);
+
 new Vue({
     router,
     store,

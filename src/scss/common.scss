@@ -109,6 +109,10 @@ section {
     display: block;
     color: inherit;
 }
+html,
+body {
+    height: 100%;
+}
 body {
     background-color: #f7f8fb;
     line-height: 1;
@@ -171,5 +175,12 @@ textarea {
     padding-top: 8px;
     font-size: 12px;
     color: #da3620;
+}
+
+#app {
+    height: 100%;
+    background: {
+        image: url('~@/assets/M.svg');
+    }
 }
 @include button();

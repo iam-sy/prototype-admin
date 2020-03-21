@@ -1,24 +1,56 @@
 <template>
     <div class="search">
-        <form action="?">
-            <fieldset>
-                <legend class="screen-out">검색</legend>
-                <label for="search">search</label>
-                <input type="text" id="search" autocomplete="off" />
-                <button type="submit">
-                    <span class="screen-out">검색</span>
-                </button>
-            </fieldset>
-        </form>
+        <input
+            ref="search"
+            type="text"
+            :value="value"
+            autocomplete="off"
+            :id="id"
+            :placeholder="placeholder"
+            :title="title"
+            @keydown.enter="searchSubmit"
+        />
+        <button :type="buttonType" @click="searchSubmit">
+            <span class="screen-out">검색</span>
+        </button>
     </div>
 </template>
 
 <script>
-export default {};
+export default {
+    props: {
+        id: {
+            type: String,
+            default: 'search',
+        },
+        value: {
+            type: String,
+        },
+        placeholder: {
+            type: String,
+            default: 'search',
+        },
+        title: {
+            type: String,
+            default: 'search',
+        },
+        buttonType: {
+            type: String,
+            default: 'submit',
+        },
+    },
+    methods: {
+        searchSubmit() {
+            const val = this.$refs.search.value;
+            this.$emit('search', val);
+        },
+    },
+};
 </script>
 
 <style scoped lang="scss">
 .search {
+    display: inline-block;
     position: relative;
     label {
         font-family: 'Noto Sans KR';
@@ -27,10 +59,10 @@ export default {};
         margin-right: 10px;
     }
     input {
-        width: 114px;
+        width: 180px;
         height: 30px;
-        border: none;
-        background-color: $color4;
+        background-color: #fff;
+        border: 1px solid transparentize(#000, 0.8);
         border-radius: 15px;
         padding: 0 30px 0 10px;
     }

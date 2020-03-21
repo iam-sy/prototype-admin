@@ -85,7 +85,7 @@ export default {
         span {
             font-size: 16px;
             display: block;
-            padding: 0 6px;
+            padding: 0 12px;
             font-weight: 500;
             color: $color1;
             transition: color 0.5s ease-out;

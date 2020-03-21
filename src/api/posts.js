@@ -7,7 +7,7 @@ function createPost(data) {
 function fetchPosts(sec) {
     return instance.get('/api/post', {
         params: {
-            sec: sec,
+            ...sec,
         },
     });
 }

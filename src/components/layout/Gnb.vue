@@ -1,20 +1,23 @@
 <template>
     <header class="nav">
         <div class="nav__logo">
-            <a href="#lnk"><img src="@/assets/img-logo--logs.svg" alt=""/></a>
+            <router-link to="/blog/list">
+                <img src="@/assets/logo.svg" alt="" />
+            </router-link>
+            <h1>.logs</h1>
         </div>
         <div class="nav__aside">
-            <SearchInput></SearchInput>
+            <globalMenu></globalMenu>
         </div>
     </header>
 </template>
 
 <script>
-import SearchInput from '@/components/common/SearchInput.vue';
+import globalMenu from '@/components/layout/globalMenu.vue';
 export default {
     name: 'Gnb',
     components: {
-        SearchInput,
+        globalMenu,
     },
 };
 </script>
@@ -26,6 +29,7 @@ export default {
     justify-content: space-between;
     &__logo {
         display: table;
+        position: relative;
         a {
             display: inline-block;
             &:not(:first-child) {
@@ -33,7 +37,15 @@ export default {
             }
         }
         img {
-            height: 51px;
+            height: 45px;
+        }
+        h1 {
+            position: absolute;
+            left: 45px;
+            top: 15px;
+            font-weight: 400;
+            font-size: 30px;
+            color: $color1;
         }
     }
     &__aside {
