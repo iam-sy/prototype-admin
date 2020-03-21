@@ -114,8 +114,12 @@ body {
     height: 100%;
 }
 body {
-    background-color: #f7f8fb;
     line-height: 1;
+    background: {
+        image: url('~@/assets/M.svg');
+        repeat: no-repeat;
+        color: #f7f8fb;
+    }
 }
 blockquote,
 q {
@@ -178,9 +182,8 @@ textarea {
 }
 
 #app {
-    height: 100%;
-    background: {
-        image: url('~@/assets/M.svg');
-    }
+    margin: 0 auto;
+    max-width: 1740px;
+    padding: 0 60px;
 }
 @include button();

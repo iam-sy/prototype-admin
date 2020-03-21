@@ -4,6 +4,7 @@
             type="button"
             :class="['menu__button', selectMenu === 'all' ? 'is-active' : '']"
             value="all"
+            @focus="secSelect"
             @click="secSelect"
         >
             <span>.all</span>
@@ -102,7 +103,7 @@ export default {
         bottom: -5px;
         width: 0;
         height: 2px;
-        background-color: $color1;
+        background-color: $color8;
         transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
     }
 }

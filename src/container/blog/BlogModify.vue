@@ -92,14 +92,14 @@
         </div>
 
         <div class="board-write__control cta-wrap">
-            <button type="button" class="cta" @click="cancelPost">
+            <button type="button" class="cta cta--dark" @click="cancelPost">
                 <span>취소</span>
-            </button>
-            <button type="button" @click="deletePost" class="cta cta--dark">
-                <span>삭제</span>
             </button>
             <button type="button" @click="submitPost" class="cta cta--green">
                 <span>등록</span>
+            </button>
+            <button type="button" @click="deletePost" class="cta">
+                <span>삭제</span>
             </button>
         </div>
     </div>
@@ -205,7 +205,11 @@ export default {
     },
     computed: {
         addressCompile() {
-            const imgPath = this.sumnail ? this.base64 : imagePath(this.image);
+            const imgPath = this.sumnail
+                ? this.base64
+                : this.image
+                ? imagePath(this.image)
+                : '';
             return imgPath;
         },
     },
