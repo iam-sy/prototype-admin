@@ -17,17 +17,23 @@
                 tagColor="black"
             ></CodeViewer>
         </div>
+        <div class="blog-view__linkpost">
+            <BlogLink :next="next" :prev="prev" @update="idUpdate"></BlogLink>
+        </div>
         <div class="blog-view__list"></div>
     </div>
 </template>
 
 <script>
 import CodeViewer from '@/components/CodeEditor/CodeViewer';
+import BlogLink from '@/components/blog/BlogLink';
 import BlogHeadMenu from '@/components/blog/BlogHeadMenu';
 import { imagePath, parseHeadings } from '@/utils/parser';
 import { fetchPostById } from '@/api/index';
 export default {
+    name: 'BlogView',
     components: {
+        BlogLink,
         BlogHeadMenu,
         CodeViewer,
     },
@@ -41,6 +47,8 @@ export default {
             content: '',
             createdAt: '',
             headingsInfo: '',
+            next: '',
+            prev: '',
         };
     },
     methods: {
@@ -55,18 +63,26 @@ export default {
             this.content = content;
             this.createdAt = createdAt;
         },
+        async fetchId(id) {
+            const { data } = await fetchPostById(id);
+            this.next = data.next;
+            this.prev = data.prev;
+            this.headingsInfo = parseHeadings(data.posts.content);
+            this.setForm(data);
+        },
+        idUpdate(id) {
+            this.fetchId(id);
+        },
     },
     computed: {
         addressCompile() {
             return this.image ? imagePath(this.image) : '';
         },
     },
-    async created() {
+    created() {
+        console.log(this.$route.params.id);
         const id = this.$route.params.id;
-        const { data } = await fetchPostById(id);
-        this.headingsInfo = parseHeadings(data.posts.content);
-        console.log(this.headingsInfo);
-        this.setForm(data);
+        this.fetchId(id);
     },
 };
 </script>
@@ -79,7 +95,8 @@ export default {
 
     &__menu {
         position: absolute;
-        left: -300px;
+        width: 280px;
+        left: -280px;
         top: 127px;
         menu {
             position: fixed;
@@ -97,6 +114,12 @@ export default {
         font-family: 'Noto Sans KR';
         font-size: 12px;
         color: $color7;
+    }
+    &__linkpost {
+        position: absolute;
+        right: -338px;
+        width: 280px;
+        top: 127px;
     }
 }
 </style>

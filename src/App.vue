@@ -1,7 +1,7 @@
 <template>
     <div id="app">
         <Gnb></Gnb>
-        <router-view />
+        <router-view :key="$route.fullPath" />
         <Dimed></Dimed>
     </div>
 </template>
