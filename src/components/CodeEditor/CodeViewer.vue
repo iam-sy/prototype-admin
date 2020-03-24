@@ -14,40 +14,18 @@
         <div class="code-viewer__desc" v-if="desc">
             {{ desc }}
         </div>
-        <div class="code-viewer__content" v-html="parseHtml"></div>
+        <div class="code-viewer__content" v-html="compileHtml"></div>
     </div>
 </template>
 
 <script>
-import marked from 'marked';
-import Prism from 'prismjs';
-import 'prismjs/components/prism-bash.min';
-import 'prismjs/components/prism-json.min';
-import 'prismjs/components/prism-typescript.min';
-import 'prismjs/components/prism-javascript.min';
-import 'prismjs/components/prism-jsx.min';
-import 'prismjs/components/prism-css.min';
-import 'prismjs/components/prism-python.min';
-import 'prismjs/components/prism-scss.min';
-import 'prismjs/components/prism-twig.min';
-import 'prismjs/components/prism-tsx.min';
+import { parseHtml } from '@/utils/parser';
 
 export default {
-    props: ['tags', 'title', 'content', 'image', 'desc'],
+    props: ['tags', 'title', 'content', 'image', 'desc', 'tagColor'],
     computed: {
-        parseHtml() {
-            marked.setOptions({
-                breaks: true,
-                highlight(code, lang) {
-                    return Prism.highlight(
-                        code,
-                        Prism.languages[lang] || Prism.languages.markup,
-                        lang,
-                    );
-                },
-            });
-
-            return marked(this.content);
+        compileHtml() {
+            return parseHtml(this.content);
         },
     },
 };
@@ -59,7 +37,7 @@ export default {
         display: table;
         font-size: 0;
         width: 100%;
-        padding-bottom: 10px;
+        padding-bottom: 15px;
         span {
             @include tagItem();
         }

@@ -9,6 +9,8 @@ const BlogWrite = () =>
     import(/* webpackChunkName: "blogwrite" */ '../views/blog/BlogWrite.vue');
 const BlogModify = () =>
     import(/* webpackChunkName: "blogmodify" */ '../views/blog/BlogModify.vue');
+const BlogView = () =>
+    import(/* webpackChunkName: "blogview" */ '../views/blog/BlogView.vue');
 
 Vue.use(VueRouter);
 
@@ -28,9 +30,14 @@ const routes = [
         component: BlogWrite,
     },
     {
-        path: '/blog/:id',
+        path: '/blog/modify/:id',
         name: 'blogmodify',
         component: BlogModify,
+    },
+    {
+        path: '/blog/view/:id',
+        name: 'blogview',
+        component: BlogView,
     },
     {
         path: '/login',

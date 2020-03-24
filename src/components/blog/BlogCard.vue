@@ -1,7 +1,7 @@
 <template>
-    <router-link :to="`/blog/${post._id}`">
+    <router-link :to="`/blog/view/${post._id}`">
         <div class="blog-card">
-            <div class="blog-card__sumnail" v-if="post.image">
+            <div class="blog-card__thumnail" v-if="post.image">
                 <img :src="addressCompile" alt="" />
             </div>
             <div class="blog-card__title">{{ post.title }}</div>
@@ -40,16 +40,18 @@ export default {
     overflow: hidden;
     box-shadow: 0 0 10px rgba(108, 108, 108, 0.07);
     min-height: 414px;
-    &__sumnail {
+    &__thumnail {
         position: relative;
         min-height: 182px;
         overflow: hidden;
         img {
             position: absolute;
-            left: 50%;
-            top: 50%;
+            left: 0;
+            top: 0;
             width: 100%;
-            transform: translate(-50%, -50%);
+            height: 100%;
+            object-fit: cover;
+            //transform: translate(-50%, -50%);
         }
     }
     &__title,
