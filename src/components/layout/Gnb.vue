@@ -13,11 +13,11 @@
 </template>
 
 <script>
-import globalMenu from '@/components/layout/globalMenu.vue';
+import GlobalMenu from '@/components/layout/GlobalMenu.vue';
 export default {
     name: 'Gnb',
     components: {
-        globalMenu,
+        GlobalMenu,
     },
 };
 </script>
