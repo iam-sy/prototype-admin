@@ -40,6 +40,15 @@
                     </li>
                 </ul>
             </div>
+            <Paging
+                @groupChange="changeGroup"
+                @paging="changePaging"
+                :perPage="perPage"
+                :totalPage="totalPage"
+                :currentPage="currentPage"
+                :startPage="startPage"
+                :endPage="endPage"
+            ></Paging>
 
             <div class="blog-list__more cta-wrap">
                 <router-link to="/blog/write" class="cta">
@@ -51,6 +60,7 @@
 </template>
 
 <script>
+import Paging from '@/components/common/Paging.vue';
 import SearchInput from '@/components/common/SearchInput.vue';
 import SearchItem from '@/components/common/SearchItem.vue';
 import Menu from '@/components/blog/Menu';
@@ -60,6 +70,7 @@ import { fetchPosts } from '@/api/posts.js';
 
 export default {
     components: {
+        Paging,
         SearchItem,
         SearchInput,
         BlogCard,
@@ -69,6 +80,14 @@ export default {
         return {
             sec: 'all',
             postItems: null,
+            currentPage: 1,
+            startPage: 1,
+            endPage: null,
+            total: null,
+            totalPage: null,
+            pageGroup: 1,
+            perPage: 10,
+            limit: 10,
             schtext: '',
             schtags: '',
             searchtext: '',
@@ -84,48 +103,100 @@ export default {
         textReset() {
             this.schtext = '';
             this.searchtext = '';
-            this.searchHandler();
+            this.fetchData(false);
         },
         tagReset(index) {
-            console.log(index);
             this.schtags = '';
             this.searchtags.splice(index, 1);
-            this.searchHandler();
+            this.fetchData(false);
         },
         resetSearch() {
             this.schtext = '';
             this.schtags = '';
+            this.currentPage = 1;
+            this.pageData();
         },
         secUpdate(data) {
             this.sec = data;
         },
-        async fetchData() {
+        pageGroupData() {
+            this.totalPage = Math.ceil(this.total / this.limit); // 총 페이지 수
+            this.pageGroup = Math.ceil(this.currentPage / this.perPage); // 페이지 그룹
+            this.totalGroup = Math.ceil(this.totalPage / this.perPage);
+        },
+        pageData() {
+            this.endPage = this.pageGroup * this.perPage; // 화면에 보여질 마지막 페이지 번호
+            if (this.endPage > this.totalPage) this.endPage = this.totalPage;
+            this.startPage = this.endPage - (this.perPage - 1); // 화면에 보여질 첫번째 페이지 번호
+            if (this.startPage < 1) this.startPage = 1;
+        },
+        changePaging(n) {
+            this.currentPage = n;
+            this.fetchData(false);
+        },
+        changeGroup(indication) {
+            let group =
+                indication === 'next' ? this.pageGroup + 1 : this.pageGroup - 1;
+            switch (indication) {
+                case 'next':
+                    if (this.totalGroup < group) return;
+                    if (this.totalGroup <= group) {
+                        this.currentPage = this.perPage * this.pageGroup + 1;
+                        this.startPage = this.perPage * this.pageGroup + 1;
+                        this.endPage = this.totalPage;
+                        this.pageGroup = this.totalGroup;
+                    } else {
+                        this.startPage = this.perPage * this.pageGroup + 1;
+                        this.endPage = this.totalPage;
+                        this.pageGroup = group;
+                        this.currentPage = this.startPage;
+                    }
+                    break;
+                case 'prev':
+                    if (0 < group) {
+                        this.endPage = group * this.perPage;
+                        this.currentPage = this.endPage - (this.perPage - 1);
+                        this.startPage = this.endPage - (this.perPage - 1);
+                        this.pageGroup = group;
+                    } else {
+                        return;
+                    }
+                    break;
+            }
+            this.fetchData();
+        },
+        async fetchData(reSearch = true) {
             const sec = this.sec;
             try {
-                const {
-                    data: { posts: postItems },
-                } = await fetchPosts({
-                    sec: sec,
-                });
-                this.postItems = postItems;
-            } catch (error) {
-                console.log(error);
-            }
-        },
-        async searchHandler() {
-            try {
                 const searchData = {
+                    perPage: this.perPage,
+                    currentPage: this.currentPage,
+                    pageGroup: this.pageGroup,
+                    limit: this.limit,
                     sec: this.sec,
                 };
-
                 if (this.searchtext) searchData.schtext = this.searchtext;
                 if (this.searchtags.length > 0)
                     searchData.schtags = this.searchtags.join(',');
+
                 const {
-                    data: { posts: postItems },
-                } = await fetchPosts(searchData);
+                    data: { totalCount, posts: postItems },
+                } = await fetchPosts({
+                    ...searchData,
+                    perPage: this.perPage,
+                    currentPage: this.currentPage,
+                    pageGroup: this.pageGroup,
+                    limit: this.limit,
+                    sec: sec,
+                });
+
                 this.postItems = postItems;
-                this.resetSearch();
+                console.log(totalCount);
+                this.total = totalCount;
+                this.pageGroupData();
+                if (reSearch) {
+                    this.resetSearch();
+                }
             } catch (error) {
                 console.log(error);
             }
@@ -134,12 +205,10 @@ export default {
             if (val !== '') {
                 this.schtext = val;
                 this.searchtext = val;
-                this.searchHandler();
+                this.fetchData();
             } else {
                 alert('검색어를 입력하세요');
             }
-
-            this.searchHandler();
         },
         searchTags(val) {
             if (val !== '') {
@@ -149,7 +218,7 @@ export default {
                 } else {
                     alert('이미 추가된 태그입니다.');
                 }
-                this.searchHandler();
+                this.fetchData();
             } else {
                 alert('태그를 입력하세요');
             }
@@ -200,7 +269,7 @@ export default {
         }
     }
     &__more {
-        margin: 55px 0;
+        margin: 30px 0;
         text-align: center;
     }
 }
