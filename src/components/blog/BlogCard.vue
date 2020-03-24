@@ -103,7 +103,6 @@ export default {
             font-family: 'Noto Sans KR';
             font-size: 12px;
             list-style-type: none;
-            color: $color3;
             background: {
                 image: url('~@/assets/ico-tag.svg');
                 repeat: no-repeat;
