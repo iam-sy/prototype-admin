@@ -98,20 +98,12 @@
             <button type="button" @click="submitPost" class="cta cta--green">
                 <span>등록</span>
             </button>
-            <button type="button" @click="deletePost" class="cta">
-                <span>삭제</span>
-            </button>
         </div>
     </div>
 </template>
 <script>
 import { imagePath } from '@/utils/parser';
-import {
-    fetchData,
-    fetchPostById,
-    editPostById,
-    deletePostById,
-} from '@/api/index';
+import { fetchPostById, editPostById } from '@/api/index';
 import TagEditor from '@/components/CodeEditor/TagEditor';
 import CodeEditor from '@/components/CodeEditor/CodeEditor';
 import CodeViewer from '@/components/CodeEditor/CodeViewer';
@@ -147,18 +139,6 @@ export default {
             this.tags = tags;
             this.desc = desc;
             this.content = content;
-        },
-
-        async deletePost(id) {
-            try {
-                const id = this.$route.params.id;
-                if (confirm('Delete it?')) {
-                    const response = await deletePostById(id);
-                    this.$router.push('/blog/list');
-                }
-            } catch (error) {
-                console.log(error);
-            }
         },
         async submitPost() {
             const valid = await this.$refs.form.validate();

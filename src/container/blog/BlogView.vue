@@ -20,7 +20,20 @@
         <div class="blog-view__linkpost">
             <BlogLink :next="next" :prev="prev" @update="idUpdate"></BlogLink>
         </div>
-        <div class="blog-view__list"></div>
+        <div class="board-write__control cta-wrap">
+            <button type="button" class="cta cta--dark" @click="cancelPost">
+                <span>취소</span>
+            </button>
+            <router-link
+                :to="{ name: 'blogmodify', params: { id: $route.params.id } }"
+                class="cta cta--green"
+            >
+                <span>수정</span>
+            </router-link>
+            <button type="button" @click="deletePost" class="cta">
+                <span>삭제</span>
+            </button>
+        </div>
     </div>
 </template>
 
@@ -29,7 +42,7 @@ import CodeViewer from '@/components/CodeEditor/CodeViewer';
 import BlogLink from '@/components/blog/BlogLink';
 import BlogHeadMenu from '@/components/blog/BlogHeadMenu';
 import { imagePath, parseHeadings } from '@/utils/parser';
-import { fetchPostById } from '@/api/index';
+import { fetchPostById, deletePostById } from '@/api/index';
 export default {
     name: 'BlogView',
     components: {
@@ -52,6 +65,18 @@ export default {
         };
     },
     methods: {
+        async deletePost(id) {
+            try {
+                const id = this.$route.params.id;
+                if (confirm('Delete it?')) {
+                    const response = await deletePostById(id);
+                    this.$router.push('/blog/list');
+                }
+            } catch (error) {
+                console.log(error);
+            }
+        },
+
         setForm({
             posts: { sec, title, image, tags, desc, content, createdAt },
         }) {
@@ -69,6 +94,9 @@ export default {
             this.prev = data.prev;
             this.headingsInfo = parseHeadings(data.posts.content);
             this.setForm(data);
+        },
+        cancelPost() {
+            this.$router.push('/blog/list');
         },
         idUpdate(id) {
             this.fetchId(id);
