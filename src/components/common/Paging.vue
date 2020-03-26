@@ -62,7 +62,6 @@ export default {
                 items[i] = page;
                 if (page.number >= this.totalPage) break;
             }
-            console.dir(items);
             return items;
         },
     },

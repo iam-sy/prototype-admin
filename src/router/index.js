@@ -1,8 +1,9 @@
 import Vue from 'vue';
 import VueRouter from 'vue-router';
 import store from '@/store';
+import * as blog from '@/store/modules/blog/type';
 
-import eventBus from '@/utils/eventBus';
+/* components views */
 const LoginPage = () =>
     import(/* webpackChunkName: "loginpage" */ '../views/login/LoginPage.vue');
 const BlogList = () =>
@@ -25,7 +26,6 @@ const routes = [
         path: '/blog/list',
         name: 'bloglist',
         component: BlogList,
-        beforeEnter,
     },
     {
         path: '/blog/write',
@@ -36,13 +36,28 @@ const routes = [
         path: '/blog/modify/:id',
         name: 'blogmodify',
         component: BlogModify,
-        beforeEnter,
     },
     {
-        path: '/blog/view/:id',
-        name: 'blogview',
+        path: '/blog/view',
+        name: 'blogDetail',
         component: BlogView,
-        beforeEnter,
+        children: [
+            {
+                path: ':id',
+                name: 'blogview',
+                component: BlogView,
+                props: true,
+                beforeEnter: (to, from, next) => {
+                    store
+                        .dispatch(
+                            `${blog.NAMESPACE}/${blog.FETCH_ITEM}`,
+                            to.params.id,
+                        )
+                        .then(next())
+                        .catch(() => new Error('FETCH_VIEW error'));
+                },
+            },
+        ],
     },
     {
         path: '/login',
@@ -50,17 +65,6 @@ const routes = [
         component: LoginPage,
     },
 ];
-function beforeEnter(to, from, next) {
-    /*    eventBus.$emit('start:spinner');
-
-    if (!store.getters['isLoading']) {
-        next();
-    }*/
-    //eventBus.$emit('start:spinner');
-
-    console.log('beforeEnter');
-    next();
-}
 const router = new VueRouter({
     mode: 'history',
     base: process.env.BASE_URL,

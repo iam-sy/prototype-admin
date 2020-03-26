@@ -18,7 +18,7 @@
             ></CodeViewer>
         </div>
         <div class="blog-view__linkpost">
-            <BlogLink :next="next" :prev="prev" @update="idUpdate"></BlogLink>
+            <BlogLink :next="next" :prev="prev"></BlogLink>
         </div>
         <div class="board-write__control cta-wrap">
             <button type="button" class="cta cta--dark" @click="cancelPost">
@@ -41,8 +41,13 @@
 import CodeViewer from '@/components/CodeEditor/CodeViewer';
 import BlogLink from '@/components/blog/BlogLink';
 import BlogHeadMenu from '@/components/blog/BlogHeadMenu';
-import { imagePath, parseHeadings } from '@/utils/parser';
-import { fetchPostById, deletePostById } from '@/api/index';
+import { imagePath } from '@/utils/parser';
+import { deletePostById } from '@/api/index';
+import * as blog from '@/store/modules/blog/type';
+
+import { createNamespacedHelpers } from 'vuex';
+const blogStore = createNamespacedHelpers(`${blog.NAMESPACE}`);
+
 export default {
     name: 'BlogView',
     components: {
@@ -50,21 +55,25 @@ export default {
         BlogHeadMenu,
         CodeViewer,
     },
-    data() {
-        return {
-            sec: '',
-            title: '',
-            tags: [],
-            desc: '',
-            image: '',
-            content: '',
-            createdAt: '',
-            headingsInfo: '',
-            next: '',
-            prev: '',
-        };
+    computed: {
+        addressCompile() {
+            return this.image ? imagePath(this.image) : '';
+        },
+        ...blogStore.mapState({
+            sec: state => state.sec,
+            title: state => state.title,
+            image: state => state.image,
+            tags: state => state.tags,
+            desc: state => state.desc,
+            content: state => state.content,
+            createdAt: state => state.createdAt,
+            next: state => state.next,
+            prev: state => state.prev,
+            headingsInfo: state => state.headingsInfo,
+        }),
     },
     methods: {
+        ...blogStore.mapActions([blog.FETCH_ITEM]),
         async deletePost(id) {
             try {
                 const id = this.$route.params.id;
@@ -76,41 +85,12 @@ export default {
                 console.log(error);
             }
         },
-
-        setForm({
-            posts: { sec, title, image, tags, desc, content, createdAt },
-        }) {
-            this.sec = sec;
-            this.title = title;
-            this.image = image;
-            this.tags = tags;
-            this.desc = desc;
-            this.content = content;
-            this.createdAt = createdAt;
-        },
-        async fetchId(id) {
-            const { data } = await fetchPostById(id);
-            this.next = data.next;
-            this.prev = data.prev;
-            this.headingsInfo = parseHeadings(data.posts.content);
-            this.setForm(data);
-        },
         cancelPost() {
             this.$router.push('/blog/list');
         },
-        idUpdate(id) {
-            this.fetchId(id);
-        },
-    },
-    computed: {
-        addressCompile() {
-            return this.image ? imagePath(this.image) : '';
-        },
     },
     created() {
-        console.log(this.$route.params.id);
-        const id = this.$route.params.id;
-        this.fetchId(id);
+        this[blog.FETCH_ITEM](this.$route.params.id);
     },
 };
 </script>

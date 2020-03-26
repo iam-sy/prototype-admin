@@ -191,7 +191,6 @@ export default {
                 });
 
                 this.postItems = postItems;
-                console.log(totalCount);
                 this.total = totalCount;
                 this.pageGroupData();
                 if (reSearch) {

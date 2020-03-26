@@ -26,6 +26,9 @@ const Plugin = {
             disableEvent(cb) {
                 Plugin.event.$emit('disableEvent', false);
             },
+            enableEvent(cb) {
+                Plugin.event.$emit('disableEvent', true);
+            },
         };
         Vue.prototype.$dimComp = Dimed;
     },

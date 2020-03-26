@@ -22,19 +22,16 @@ export default {
         };
     },
     methods: {
-        startSpinner(cb) {
-            if (this.isLoading) return;
-            console.log('this.isLoading', this.isLoading);
+        startSpinner() {
             this.LoadingStatus = true;
-            this.$store.commit('LOADING_TOGGLE', this.LoadingStatus);
             this.$dim.show();
+            this.$dim.disableEvent();
             eventBus.$on('dimEventClose', this.endSpinner);
         },
         endSpinner() {
-            if (!this.isLoading) return;
             this.LoadingStatus = false;
-            this.$store.commit('LOADING_TOGGLE', this.LoadingStatus);
             eventBus.$off('dimEventClose', this.endSpinner);
+            this.$dim.enableEvent();
             this.$dim.hide();
         },
     },
@@ -42,9 +39,6 @@ export default {
     created() {
         eventBus.$on('start:spinner', this.startSpinner);
         eventBus.$on('end:spinner', this.endSpinner);
-    },
-    computed: {
-        ...mapGetters(['isLoading']),
     },
     beforeDestroy() {
         eventBus.$off('start:spinner');
