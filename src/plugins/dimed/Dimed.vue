@@ -16,6 +16,9 @@ import Dimed from './index';
 import eventBus from '@/utils/eventBus';
 export default {
     props: {
+        defaultShow: {
+            type: Boolean,
+        },
         disableEvent: {
             type: Boolean,
             default: false,
@@ -31,7 +34,7 @@ export default {
         dimToggle(state, cb) {
             this.show = state;
             if (!state) {
-                eventBus.$emit('modalToggle', false);
+                eventBus.$emit('dimEventClose', false);
             }
             if (typeof cb === 'function') cb();
         },
@@ -54,6 +57,9 @@ export default {
     },
     created() {
         if (this.disableEvent) this.overlayEvent = false;
+        if (this.defaultShow) {
+            this.show = this.defaultShow;
+        }
     },
 };
 </script>
@@ -64,7 +70,7 @@ export default {
     top: 0;
     width: 100vw;
     height: 100vh;
-    background-color: transparentize(#fff, 0.5);
+    background-color: transparentize(#000, 0.5);
     z-index: 100;
 }
 .fade-enter-active,

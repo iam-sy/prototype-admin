@@ -301,10 +301,10 @@ export default {
         },
         dimControl(nextState) {
             if (nextState) {
-                eventBus.$on('modalToggle', this.toggle);
+                eventBus.$on('dimEventClose', this.toggle);
                 this.$dim.show();
             } else {
-                eventBus.$off('modalToggle', this.toggle);
+                eventBus.$off('dimEventClose', this.toggle);
                 this.$dim.hide();
             }
         },

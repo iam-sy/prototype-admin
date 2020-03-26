@@ -1,21 +1,46 @@
 <template>
-    <div class="spinner"></div>
+    <div class="spinner" v-if="loading">
+        <div class="spinner__circle">
+            <span class="screen-out">로딩중</span>
+        </div>
+    </div>
 </template>
-<style>
+<script>
+export default {
+    props: {
+        loading: {
+            type: Boolean,
+            default: false,
+            required: true,
+        },
+    },
+};
+</script>
+<style scoped lang="scss">
 .spinner {
-    color: #ffffff;
-    font-size: 20px;
-    margin: 100px auto;
-    width: 1em;
-    height: 1em;
-    border-radius: 50%;
-    position: relative;
-    text-indent: -9999em;
-    -webkit-animation: spinner 1.3s infinite linear;
-    animation: spinner 1.3s infinite linear;
-    -webkit-transform: translateZ(0);
-    -ms-transform: translateZ(0);
-    transform: translateZ(0);
+    z-index: 101;
+    display: inline-block;
+    position: absolute;
+    width: 100px;
+    height: 100px;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    &__circle {
+        color: #ffffff;
+        font-size: 20px;
+        margin: 100px auto;
+        width: 1em;
+        height: 1em;
+        border-radius: 50%;
+        position: relative;
+        text-indent: -9999em;
+        -webkit-animation: spinner 1.3s infinite linear;
+        animation: spinner 1.3s infinite linear;
+        -webkit-transform: translateZ(0);
+        -ms-transform: translateZ(0);
+        transform: translateZ(0);
+    }
 }
 @keyframes spinner {
     0%,
