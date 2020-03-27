@@ -46,7 +46,34 @@ const routes = [
         path: '/blog/list',
         name: 'bloglist',
         component: BlogList,
-        beforeEnter,
+        beforeEnter: async (to, from, next) => {
+            if (
+                store.getters[`${auth.NAMESPACE}/${auth.ISLOGIN}`] ||
+                getUserFromCookie()
+            ) {
+                const {
+                    config: { perPage, currentPage, pageGroup, limit, sec },
+                } = store.getters[`${blog.NAMESPACE}/${blog.GET_LIST}`];
+                const searchData = {
+                    perPage,
+                    currentPage,
+                    pageGroup,
+                    limit,
+                    sec,
+                };
+
+                await store.dispatch(
+                    `${blog.NAMESPACE}/${blog.FETCH_ITEMS}`,
+                    searchData,
+                );
+                next();
+                /*.then()
+                        .catch(() => new Error('FETCH_VIEW error'));*/
+            } else {
+                alert('sign in please');
+                next('/login');
+            }
+        },
     },
     {
         path: '/blog/write',

@@ -1,30 +1,30 @@
 <template>
     <div class="blog-list">
         <div class="blog-list__menu">
-            <Menu :sec="sec" @secUpdate="secUpdate"></Menu>
+            <Menu :sec="posts.config.sec" @secUpdate="secUpdate"></Menu>
         </div>
         <div class="blog-list__search">
             <div class="blog-list__search-item">
                 <SearchInput
-                    v-model="schtext"
+                    v-model="posts.config.schtext"
                     @search="searchText"
                 ></SearchInput>
                 <SearchItem
-                    v-if="searchtext"
-                    :text="searchtext"
+                    v-if="posts.config.searchtext"
+                    :text="posts.config.searchtext"
                     @remove="textReset"
                 ></SearchItem>
             </div>
             <div class="blog-list__search-item">
                 <SearchInput
-                    v-model="schtags"
+                    v-model="posts.config.schtags"
                     id="tags"
                     title="tags"
                     placeholder="tags"
                     @search="searchTags"
                 ></SearchInput>
                 <SearchItem
-                    v-for="(tag, index) in searchtags"
+                    v-for="(tag, index) in posts.config.searchtags"
                     :key="`${tag}_${index}`"
                     :text="tag"
                     :index="index"
@@ -35,7 +35,7 @@
         <div class="blog-list__main">
             <div class="blog-list__list">
                 <ul>
-                    <li v-for="post in postItems" :key="post._id">
+                    <li v-for="post in posts.items" :key="post._id">
                         <BlogCard :post="post"></BlogCard>
                     </li>
                 </ul>
@@ -43,11 +43,11 @@
             <Paging
                 @groupChange="changeGroup"
                 @paging="changePaging"
-                :perPage="perPage"
-                :totalPage="totalPage"
-                :currentPage="currentPage"
-                :startPage="startPage"
-                :endPage="endPage"
+                :perPage="posts.config.perPage"
+                :totalPage="posts.config.totalPage"
+                :currentPage="posts.config.currentPage"
+                :startPage="posts.config.startPage"
+                :endPage="posts.config.endPage"
             ></Paging>
 
             <div class="blog-list__more cta-wrap">
@@ -66,7 +66,10 @@ import SearchItem from '@/components/common/SearchItem.vue';
 import Menu from '@/components/blog/Menu';
 import BlogCard from '@/components/blog/BlogCard.vue';
 
-import { fetchPosts } from '@/api/posts.js';
+import * as blog from '@/store/modules/blog/type';
+
+import { createNamespacedHelpers } from 'vuex';
+const blogStore = createNamespacedHelpers(`${blog.NAMESPACE}`);
 
 export default {
     components: {
@@ -76,88 +79,102 @@ export default {
         BlogCard,
         Menu,
     },
-    data() {
-        return {
-            sec: 'all',
-            postItems: null,
-            currentPage: 1,
-            startPage: 1,
-            endPage: null,
-            total: null,
-            totalPage: null,
-            pageGroup: 1,
-            perPage: 10,
-            limit: 10,
-            schtext: '',
-            schtags: '',
-            searchtext: '',
-            searchtags: [],
-        };
-    },
-    watch: {
-        sec() {
-            this.fetchData();
-        },
-    },
+
     methods: {
+        ...blogStore.mapActions([blog.FETCH_ITEMS, blog.FETCH_CONFIG]),
         textReset() {
-            this.schtext = '';
-            this.searchtext = '';
+            this[blog.FETCH_CONFIG]({
+                schtext: '',
+                searchtext: '',
+            });
             this.fetchData(false);
         },
         tagReset(index) {
-            this.schtags = '';
-            this.searchtags.splice(index, 1);
+            const searchtags = this.posts.config.searchtags;
+            searchtags.splice(index, 1);
+            this[blog.FETCH_CONFIG]({
+                schtags: '',
+                searchtags: searchtags,
+                currentPage: 1,
+            });
             this.fetchData(false);
         },
         resetSearch() {
-            this.schtext = '';
-            this.schtags = '';
-            this.currentPage = 1;
+            this[blog.FETCH_CONFIG]({
+                schtext: '',
+                schtags: '',
+                currentPage: 1,
+            });
             this.pageData();
         },
         secUpdate(data) {
-            this.sec = data;
-        },
-        pageGroupData() {
-            this.totalPage = Math.ceil(this.total / this.limit); // 총 페이지 수
-            this.pageGroup = Math.ceil(this.currentPage / this.perPage); // 페이지 그룹
-            this.totalGroup = Math.ceil(this.totalPage / this.perPage);
+            this[blog.FETCH_CONFIG]({
+                sec: data,
+                currentPage: 1,
+            });
+            this.fetchData();
         },
         pageData() {
-            this.endPage = this.pageGroup * this.perPage; // 화면에 보여질 마지막 페이지 번호
-            if (this.endPage > this.totalPage) this.endPage = this.totalPage;
-            this.startPage = this.endPage - (this.perPage - 1); // 화면에 보여질 첫번째 페이지 번호
-            if (this.startPage < 1) this.startPage = 1;
+            let endPage =
+                this.posts.config.pageGroup * this.posts.config.perPage; // 화면에 보여질 마지막 페이지 번호
+            if (endPage > this.posts.config.totalPage)
+                endPage = this.posts.config.totalPage;
+            let startPage = endPage - (this.posts.config.perPage - 1); // 화면에 보여질 첫번째 페이지 번호
+            if (startPage < 1) startPage = 1;
+            this[blog.FETCH_CONFIG]({
+                endPage: endPage,
+                startPage: startPage,
+            });
         },
         changePaging(n) {
-            this.currentPage = n;
+            this[blog.FETCH_CONFIG]({ currentPage: n });
             this.fetchData(false);
         },
         changeGroup(indication) {
             let group =
-                indication === 'next' ? this.pageGroup + 1 : this.pageGroup - 1;
+                indication === 'next'
+                    ? this.posts.config.pageGroup + 1
+                    : this.posts.config.pageGroup - 1;
             switch (indication) {
                 case 'next':
                     if (this.totalGroup < group) return;
                     if (this.totalGroup <= group) {
-                        this.currentPage = this.perPage * this.pageGroup + 1;
-                        this.startPage = this.perPage * this.pageGroup + 1;
-                        this.endPage = this.totalPage;
-                        this.pageGroup = this.totalGroup;
+                        this[blog.FETCH_CONFIG]({
+                            currentPage:
+                                this.posts.config.perPage *
+                                    this.posts.config.pageGroup +
+                                1,
+                            startPage:
+                                this.posts.config.perPage *
+                                    this.posts.config.pageGroup +
+                                1,
+                            endPage: this.posts.config.totalPage,
+                            pageGroup: this.posts.config.totalGroup,
+                        });
                     } else {
-                        this.startPage = this.perPage * this.pageGroup + 1;
-                        this.endPage = this.totalPage;
-                        this.pageGroup = group;
-                        this.currentPage = this.startPage;
+                        this[blog.FETCH_CONFIG]({
+                            startPage:
+                                this.posts.config.perPage *
+                                    this.posts.config.pageGroup +
+                                1,
+                            endPage: this.posts.config.totalPage,
+                            pageGroup: group,
+                            currentPage: this.posts.config.startPage,
+                        });
                     }
                     break;
                 case 'prev':
                     if (0 < group) {
-                        this.endPage = group * this.perPage;
-                        this.currentPage = this.endPage - (this.perPage - 1);
-                        this.startPage = this.endPage - (this.perPage - 1);
-                        this.pageGroup = group;
+                        this[blog.FETCH_CONFIG]({
+                            endPage: group * this.posts.config.perPage,
+                            currentPage:
+                                this.posts.config.endPage -
+                                (this.posts.config.perPage - 1),
+                            startPage:
+                                this.posts.config.endPage -
+                                (this.posts.config.perPage - 1),
+                            pageGroup: group,
+                        });
                     } else {
                         return;
                     }
@@ -166,28 +183,21 @@ export default {
             this.fetchData();
         },
         async fetchData(reSearch = true) {
-            const sec = this.sec;
             try {
                 const searchData = {
-                    perPage: this.perPage,
-                    currentPage: this.currentPage,
-                    pageGroup: this.pageGroup,
-                    limit: this.limit,
-                    sec: this.sec,
+                    perPage: this.posts.config.perPage,
+                    currentPage: this.posts.config.currentPage,
+                    pageGroup: this.posts.config.pageGroup,
+                    limit: this.posts.config.limit,
+                    sec: this.posts.config.sec,
                 };
-                if (this.searchtext) searchData.schtext = this.searchtext;
-                if (this.searchtags.length > 0)
-                    searchData.schtags = this.searchtags.join(',');
+                if (this.posts.config.searchtext)
+                    searchData.schtext = this.posts.config.searchtext;
+                if (this.posts.config.searchtags.length > 0)
+                    searchData.schtags = this.posts.config.searchtags.join(',');
 
-                const {
-                    data: { totalCount, posts: postItems },
-                } = await fetchPosts({
-                    ...searchData,
-                });
+                this[blog.FETCH_ITEMS](searchData);
 
-                this.postItems = postItems;
-                this.total = totalCount;
-                this.pageGroupData();
                 if (reSearch) {
                     this.resetSearch();
                 }
@@ -197,8 +207,7 @@ export default {
         },
         searchText(val) {
             if (val !== '') {
-                this.schtext = val;
-                this.searchtext = val;
+                this[blog.FETCH_CONFIG]({ schtext: val, searchtext: val });
                 this.fetchData();
             } else {
                 alert('검색어를 입력하세요');
@@ -206,9 +215,11 @@ export default {
         },
         searchTags(val) {
             if (val !== '') {
-                this.schtags = val;
-                if (this.searchtags.indexOf(val) === -1) {
-                    this.searchtags.push(val);
+                this[blog.FETCH_CONFIG]({ schtags: val });
+                if (this.posts.config.searchtags.indexOf(val) === -1) {
+                    const schTags = this.posts.config.searchtags;
+                    schTags.push(val);
+                    this[blog.FETCH_CONFIG]({ schtags: schTags });
                 } else {
                     alert('이미 추가된 태그입니다.');
                 }
@@ -218,8 +229,14 @@ export default {
             }
         },
     },
-    created() {
-        this.fetchData();
+    computed: {
+        ...blogStore.mapState(['posts']),
+    },
+    mounted() {
+        //console.log(this);
+        //console.log(blogStore);
+        //console.log(this.$store);
+        //this.fetchData();
     },
 };
 </script>

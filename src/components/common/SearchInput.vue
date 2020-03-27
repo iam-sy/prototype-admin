@@ -43,6 +43,7 @@ export default {
         searchSubmit() {
             const val = this.$refs.search.value;
             this.$emit('search', val);
+            this.$refs.search.value = '';
         },
     },
 };

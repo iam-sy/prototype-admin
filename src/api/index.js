@@ -1,4 +1,5 @@
 import {
+    fetchPosts,
     createPost,
     fetchPostById,
     editPostById,
@@ -8,6 +9,7 @@ import { loginUser, registerUser } from '@/api/auth';
 import { uploadImage } from '@/api/imageUploader';
 
 export {
+    fetchPosts,
     uploadImage,
     createPost,
     fetchPostById,
