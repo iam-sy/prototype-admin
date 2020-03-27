@@ -4,42 +4,45 @@ import { parseHeadings } from '@/utils/parser';
 
 const postViewInitState = () => {
     return {
-        sec: '',
-        title: '',
-        tags: [],
-        desc: '',
-        image: '',
-        content: '',
-        createdAt: '',
-        headingsInfo: [],
-        next: '',
-        prev: '',
+        postItem: {
+            sec: '',
+            title: '',
+            tags: [],
+            desc: '',
+            image: '',
+            content: '',
+            createdAt: '',
+            headingsInfo: [],
+            next: '',
+            prev: '',
+        },
     };
 };
 
 export default {
     namespaced: true,
     state: postViewInitState,
-    getters: {},
+    getters: {
+        [blog.GET_ID](state) {
+            return state.postItem._id;
+        },
+    },
     mutations: {
-        [blog.SET_ITEM](
-            state,
-            {
-                posts: { sec, title, image, tags, desc, content, createdAt },
+        [blog.SET_ITEMS](state, { posts, next, prev }) {
+            state.postItems = {
+                ...posts,
                 next,
                 prev,
-            },
-        ) {
-            state.sec = sec;
-            state.title = title;
-            state.image = image;
-            state.tags = tags;
-            state.desc = desc;
-            state.content = content;
-            state.createdAt = createdAt;
-            state.next = next;
-            state.prev = prev;
-            state.headingsInfo = parseHeadings(content);
+                headingsInfo: parseHeadings(posts.content),
+            };
+        },
+        [blog.SET_ITEM](state, { posts, next, prev }) {
+            state.postItem = {
+                ...posts,
+                next,
+                prev,
+                headingsInfo: parseHeadings(posts.content),
+            };
         },
         [blog.SET_RESET_ITEM](state) {
             const initial = postViewInitState();

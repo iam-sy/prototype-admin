@@ -16,7 +16,7 @@
                         >
                             <label for="login__id">Email</label>
                             <input
-                                v-model="id"
+                                v-model="email"
                                 ref="id"
                                 type="text"
                                 id="login__id"
@@ -41,7 +41,7 @@
                         >
                             <label for="login__pw">Password</label>
                             <input
-                                v-model="pw"
+                                v-model="password"
                                 ref="pw"
                                 type="password"
                                 id="login__pw"
@@ -88,31 +88,47 @@
                     </button>
                 </form>
             </ValidationObserver>
+            <div class="login__utils">
+                <button
+                    type="button"
+                    class="login__textcta"
+                    v-if="isLogin"
+                    @click="changMode"
+                >
+                    회원가입
+                </button>
+                <button
+                    type="button"
+                    class="login__textcta"
+                    v-if="!isLogin"
+                    @click="changMode"
+                >
+                    로그인
+                </button>
+                <div class="login__logmessage" v-if="logMessage">
+                    {{ logMessage }}
+                </div>
+            </div>
         </div>
-        <!--<div class="login__socal">
-            <button type="button" class="login__cta login__cta&#45;&#45;google">
-                <span>구글로그인</span>
-            </button>
-        </div>-->
     </div>
 </template>
 
 <script>
+import * as auth from '@/store/modules/auth/type';
+
+import { createNamespacedHelpers } from 'vuex';
+const authStore = createNamespacedHelpers(`${auth.NAMESPACE}`);
+import { registerUser } from '@/api';
+
 export default {
     data() {
         return {
             mode: 'login',
-            id: '',
-            pw: '',
-            name: '',
-            error: {
-                id: [],
-            },
+            email: 'xlrj0716@gmail.com',
+            password: '!xlrj1215',
+            name: 'moon',
+            logMessage: '',
         };
-    },
-    watch: {
-        id(val) {},
-        pw(val) {},
     },
     computed: {
         isLogin() {
@@ -120,11 +136,51 @@ export default {
         },
     },
     methods: {
+        ...authStore.mapActions([
+            auth.FETCH_LOGIN,
+            auth.FETCH_LOGOUT,
+            auth.FETCH_REGISTER,
+        ]),
         resetForm() {
-            this.id = '';
-            this.pw = '';
+            this.email = '';
+            this.password = '';
+            this.logMessage = '';
             if (!this.isLogin) {
                 this.name = '';
+            }
+        },
+        async login() {
+            const loginData = {
+                email: this.email,
+                password: this.password,
+            };
+            try {
+                await this[auth.FETCH_LOGIN](loginData);
+                this.$router.push('/blog/list');
+                this.$nextTick(() => {
+                    this.$refs.form.reset();
+                    this.resetForm();
+                });
+            } catch (e) {
+                console.log(e);
+            }
+        },
+        async reigster() {
+            try {
+                const regData = {
+                    email: this.email,
+                    password: this.password,
+                    displayName: this.name,
+                };
+                await registerUser(regData);
+                this.logMessage = 'User is created';
+
+                this.$nextTick(() => {
+                    this.$refs.form.reset();
+                    this.resetForm();
+                });
+            } catch (e) {
+                console.log(e);
             }
         },
         onSubmit() {
@@ -132,8 +188,13 @@ export default {
                 if (!success) {
                     return;
                 }
-                console.log('success');
-                this.resetForm();
+                if (this.mode === 'login') {
+                    this.login();
+                }
+                if (this.mode === 'register') {
+                    this.reigster();
+                }
+                //this.resetForm();
             });
         },
         changMode() {
@@ -142,10 +203,9 @@ export default {
             } else if (this.mode === 'register') {
                 this.mode = 'login';
             }
-            this.resetForm();
-
             this.$nextTick(() => {
                 this.$refs.form.reset();
+                this.resetForm();
             });
         },
     },
@@ -227,7 +287,10 @@ export default {
         padding: 0 5px;
         text-decoration: underline;
     }
-    &__socal {
+    &__logmessage {
+        font-family: 'Noto Sans KR';
+        font-size: 13px;
+        margin-top: 20px;
         padding-top: 20px;
         border-top: 1px dashed #ececec;
     }

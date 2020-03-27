@@ -3,7 +3,7 @@
 </template>
 
 <script>
-import BlogWrite from '@/container/blog/BlogWrite.vue';
+import BlogWrite from '@/container/Blog/BlogWrite.vue';
 export default {
     components: {
         BlogWrite,

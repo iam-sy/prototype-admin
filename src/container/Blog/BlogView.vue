@@ -1,24 +1,26 @@
 <template>
     <div class="blog-view">
         <div class="blog-view__menu">
-            <BlogHeadMenu :headingsInfo="headingsInfo"></BlogHeadMenu>
+            <BlogHeadMenu :headingsInfo="postItem.headingsInfo"></BlogHeadMenu>
         </div>
         <div class="blog-view__sec">
-            <span class="blog-view__secname">.{{ sec }}_</span>
-            <span class="blog-view__date">{{ createdAt | formatDate }}</span>
+            <span class="blog-view__secname">.{{ postItem.sec }}_</span>
+            <span class="blog-view__date">{{
+                postItem.createdAt | formatDate
+            }}</span>
         </div>
         <div class="blog-view__viewer">
             <CodeViewer
-                :desc="desc"
+                :desc="postItem.desc"
                 :image="addressCompile"
-                :content="content"
-                :title="title"
-                :tags="tags"
+                :content="postItem.content"
+                :title="postItem.title"
+                :tags="postItem.tags"
                 tagColor="black"
             ></CodeViewer>
         </div>
         <div class="blog-view__linkpost">
-            <BlogLink :next="next" :prev="prev"></BlogLink>
+            <BlogLink :next="postItem.next" :prev="postItem.prev"></BlogLink>
         </div>
         <div class="board-write__control cta-wrap">
             <button type="button" class="cta cta--dark" @click="cancelPost">
@@ -57,19 +59,10 @@ export default {
     },
     computed: {
         addressCompile() {
-            return this.image ? imagePath(this.image) : '';
+            return this.postItem.image ? imagePath(this.postItem.image) : '';
         },
         ...blogStore.mapState({
-            sec: state => state.sec,
-            title: state => state.title,
-            image: state => state.image,
-            tags: state => state.tags,
-            desc: state => state.desc,
-            content: state => state.content,
-            createdAt: state => state.createdAt,
-            next: state => state.next,
-            prev: state => state.prev,
-            headingsInfo: state => state.headingsInfo,
+            postItem: 'postItem',
         }),
     },
     methods: {
@@ -90,7 +83,9 @@ export default {
         },
     },
     created() {
-        this[blog.FETCH_ITEM](this.$route.params.id);
+        const storeId = this.$store.getters[`${blog.NAMESPACE}/${blog.GET_ID}`];
+        if (storeId !== this.$route.params.id)
+            this[blog.FETCH_ITEM](this.$route.params.id);
     },
 };
 </script>

@@ -5,7 +5,7 @@
 </template>
 
 <script>
-import BlogModify from '@/container/blog/BlogModify.vue';
+import BlogModify from '@/container/Blog/BlogModify.vue';
 export default {
     components: {
         BlogModify,

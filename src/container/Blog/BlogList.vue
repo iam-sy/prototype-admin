@@ -183,11 +183,6 @@ export default {
                     data: { totalCount, posts: postItems },
                 } = await fetchPosts({
                     ...searchData,
-                    perPage: this.perPage,
-                    currentPage: this.currentPage,
-                    pageGroup: this.pageGroup,
-                    limit: this.limit,
-                    sec: sec,
                 });
 
                 this.postItems = postItems;

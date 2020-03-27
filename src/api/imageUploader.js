@@ -1,18 +1,18 @@
 import constants from '../../common/config';
-import instance from '@/utils/extensions/axios';
+import { axiosApiAuth } from '@/utils/extensions/axios';
 
 export function uploadImage(simplemde, params) {
     let makeRequest = params => {
-        return instance.post('/api/upload', params);
+        return axiosApiAuth.post('/api/upload', params);
     };
     let requests = params.map(makeRequest);
-    instance.spread = callback => {
+    axiosApiAuth.spread = callback => {
         return arr => {
             return callback.apply(null, arr);
         };
     };
     Promise.all(requests).then(
-        instance.spread((...resps) => {
+        axiosApiAuth.spread((...resps) => {
             for (let i = 0; i < resps.length; i++) {
                 let { status, data } = resps[i];
                 const resData = data.data;

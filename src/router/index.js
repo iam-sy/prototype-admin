@@ -2,7 +2,8 @@ import Vue from 'vue';
 import VueRouter from 'vue-router';
 import store from '@/store';
 import * as blog from '@/store/modules/blog/type';
-
+import * as auth from '@/store/modules/auth/type';
+import { getUserFromCookie } from '@/utils/cookies';
 /* components views */
 const LoginPage = () =>
     import(/* webpackChunkName: "loginpage" */ '../views/login/LoginPage.vue');
@@ -17,25 +18,47 @@ const BlogView = () =>
 
 Vue.use(VueRouter);
 
+function beforeEnter(to, from, next) {
+    if (store.getters['isLoggedIn'] || getUserFromCookie()) {
+        next();
+    } else {
+        alert('sign in please');
+        next('/login');
+    }
+}
+
 const routes = [
     {
         path: '/',
         redirect: '/login',
     },
     {
+        path: '/login',
+        name: 'loginpage',
+        component: LoginPage,
+        beforeEnter: async (to, from, next) => {
+            store.getters[`${auth.NAMESPACE}/${auth.ISLOGIN}`]
+                ? next('/blog/list')
+                : next();
+        },
+    },
+    {
         path: '/blog/list',
         name: 'bloglist',
         component: BlogList,
+        beforeEnter,
     },
     {
         path: '/blog/write',
         name: 'blogwrite',
         component: BlogWrite,
+        beforeEnter,
     },
     {
         path: '/blog/modify/:id',
         name: 'blogmodify',
         component: BlogModify,
+        beforeEnter,
     },
     {
         path: '/blog/view',
@@ -47,22 +70,31 @@ const routes = [
                 name: 'blogview',
                 component: BlogView,
                 props: true,
-                beforeEnter: (to, from, next) => {
-                    store
-                        .dispatch(
-                            `${blog.NAMESPACE}/${blog.FETCH_ITEM}`,
-                            to.params.id,
-                        )
-                        .then(next())
-                        .catch(() => new Error('FETCH_VIEW error'));
+                beforeEnter: async (to, from, next) => {
+                    if (
+                        store.getters[`${auth.NAMESPACE}/${auth.ISLOGIN}`] ||
+                        getUserFromCookie()
+                    ) {
+                        const storePostItemId =
+                            store.getters[`${blog.NAMESPACE}/${blog.GET_ID}`];
+                        if (storePostItemId === to.params.id) {
+                            next();
+                        } else {
+                            await store.dispatch(
+                                `${blog.NAMESPACE}/${blog.FETCH_ITEM}`,
+                                to.params.id,
+                            );
+                            next();
+                            /*.then()
+                                .catch(() => new Error('FETCH_VIEW error'));*/
+                        }
+                    } else {
+                        alert('sign in please');
+                        next('/login');
+                    }
                 },
             },
         ],
-    },
-    {
-        path: '/login',
-        name: 'loginpage',
-        component: LoginPage,
     },
 ];
 const router = new VueRouter({

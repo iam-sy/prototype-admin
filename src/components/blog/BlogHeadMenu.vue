@@ -1,5 +1,5 @@
 <template>
-    <menu class="blog-menu" v-if="headingsInfo.length">
+    <menu class="blog-menu" v-if="headingsInfo">
         <ul>
             <li
                 v-for="(item, index) in headingsInfo"
