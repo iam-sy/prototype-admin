@@ -1,7 +1,6 @@
 import { fetchPosts, fetchPostById } from '@/api';
 import * as blog from '@/store/modules/blog/type';
 import { parseHeadings } from '@/utils/parser';
-import LoginPage from '@/views/login/LoginPage';
 
 const postViewInitState = () => {
     return {
@@ -75,6 +74,7 @@ export default {
                 ...posts,
                 next,
                 prev,
+                headingsInfo: parseHeadings(posts.content),
             };
         },
         [blog.SET_RESET_ITEM](state) {
