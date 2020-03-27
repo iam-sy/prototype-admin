@@ -15,7 +15,7 @@ const postViewInitState = () => {
                 totalPage: null,
                 pageGroup: 1,
                 perPage: 10,
-                limit: 2,
+                limit: 10,
                 schtext: '',
                 schtags: '',
                 searchtext: '',
