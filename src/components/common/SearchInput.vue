@@ -1,9 +1,9 @@
 <template>
     <div class="search">
         <input
+            :name="name"
             ref="search"
             type="text"
-            :value="value"
             autocomplete="off"
             :id="id"
             :placeholder="placeholder"
@@ -17,14 +17,14 @@
 </template>
 
 <script>
+import * as blog from '@/store/modules/blog/type';
+import { createNamespacedHelpers } from 'vuex';
+const blogStore = createNamespacedHelpers(`${blog.NAMESPACE}`);
 export default {
     props: {
         id: {
             type: String,
             default: 'search',
-        },
-        value: {
-            type: String,
         },
         placeholder: {
             type: String,
@@ -33,6 +33,9 @@ export default {
         title: {
             type: String,
             default: 'search',
+        },
+        name: {
+            type: String,
         },
         buttonType: {
             type: String,
@@ -45,6 +48,11 @@ export default {
             this.$emit('search', val);
             this.$refs.search.value = '';
         },
+    },
+    computed: {
+        ...blogStore.mapState({
+            value: state => state.config[this.name],
+        }),
     },
 };
 </script>

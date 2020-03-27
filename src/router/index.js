@@ -52,7 +52,15 @@ const routes = [
                 getUserFromCookie()
             ) {
                 const {
-                    config: { perPage, currentPage, pageGroup, limit, sec },
+                    config: {
+                        perPage,
+                        currentPage,
+                        pageGroup,
+                        limit,
+                        sec,
+                        searchtext,
+                        searchtags,
+                    },
                 } = store.getters[`${blog.NAMESPACE}/${blog.GET_LIST}`];
                 const searchData = {
                     perPage,
@@ -61,6 +69,10 @@ const routes = [
                     limit,
                     sec,
                 };
+
+                if (searchtext) searchData.schtext = searchtext;
+                if (searchtags.length > 0)
+                    searchData.schtags = searchtags.join(',');
 
                 await store.dispatch(
                     `${blog.NAMESPACE}/${blog.FETCH_ITEMS}`,

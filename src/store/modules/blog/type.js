@@ -2,6 +2,7 @@ export const NAMESPACE = 'blogStore';
 
 /* getters */
 export const GET_LIST = `GET_LIST`;
+export const GET_SEC = `GET_SEC`;
 export const GET_ID = `GET_ID`;
 
 /* mutations */

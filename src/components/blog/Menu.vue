@@ -2,7 +2,7 @@
     <div class="menu">
         <button
             type="button"
-            :class="['menu__button', selectMenu === 'all' ? 'is-active' : '']"
+            :class="['menu__button', GET_SEC === 'all' ? 'is-active' : '']"
             value="all"
             @focus="secSelect"
             @click="secSelect"
@@ -11,10 +11,7 @@
         </button>
         <button
             type="button"
-            :class="[
-                'menu__button',
-                selectMenu === 'review' ? 'is-active' : '',
-            ]"
+            :class="['menu__button', GET_SEC === 'review' ? 'is-active' : '']"
             value="review"
             @click="secSelect"
         >
@@ -22,7 +19,7 @@
         </button>
         <button
             type="button"
-            :class="['menu__button', selectMenu === 'study' ? 'is-active' : '']"
+            :class="['menu__button', GET_SEC === 'study' ? 'is-active' : '']"
             value="study"
             @click="secSelect"
         >
@@ -32,12 +29,16 @@
             class="menu__line"
             aria-hidden="true"
             ref="line"
-            v-show="selectMenu"
+            v-show="GET_SEC"
         ></div>
     </div>
 </template>
 
 <script>
+import * as blog from '@/store/modules/blog/type';
+
+import { createNamespacedHelpers } from 'vuex';
+const blogStore = createNamespacedHelpers(`${blog.NAMESPACE}`);
 export default {
     porps: ['sec'],
     data() {
@@ -59,8 +60,12 @@ export default {
             this.$emit('secUpdate', this.selectMenu);
         },
     },
+    computed: {
+        ...blogStore.mapGetters([blog.GET_SEC]),
+    },
 
     mounted() {
+        console.log(this);
         this.$nextTick(function() {
             setTimeout(() => {
                 const $el = document.getElementsByClassName('is-active');

@@ -5,10 +5,7 @@
         </div>
         <div class="blog-list__search">
             <div class="blog-list__search-item">
-                <SearchInput
-                    v-model="posts.config.schtext"
-                    @search="searchText"
-                ></SearchInput>
+                <SearchInput name="schtext" @search="searchText"></SearchInput>
                 <SearchItem
                     v-if="posts.config.searchtext"
                     :text="posts.config.searchtext"
@@ -17,7 +14,7 @@
             </div>
             <div class="blog-list__search-item">
                 <SearchInput
-                    v-model="posts.config.schtags"
+                    name="schtags"
                     id="tags"
                     title="tags"
                     placeholder="tags"
@@ -95,7 +92,6 @@ export default {
             this[blog.FETCH_CONFIG]({
                 schtags: '',
                 searchtags: searchtags,
-                currentPage: 1,
             });
             this.fetchData(false);
         },

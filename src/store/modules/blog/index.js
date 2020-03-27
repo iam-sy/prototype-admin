@@ -14,7 +14,7 @@ const postViewInitState = () => {
                 totalPage: null,
                 pageGroup: 1,
                 perPage: 10,
-                limit: 10,
+                limit: 2,
                 schtext: '',
                 schtags: '',
                 searchtext: '',
@@ -43,6 +43,9 @@ export default {
     getters: {
         [blog.GET_LIST](state) {
             return state.posts;
+        },
+        [blog.GET_SEC](state) {
+            return state.posts.config.sec;
         },
         [blog.GET_ID](state) {
             return state.postItem._id;
