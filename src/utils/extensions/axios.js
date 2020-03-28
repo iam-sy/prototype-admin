@@ -3,6 +3,7 @@ import eventBus from '@/utils/eventBus';
 import constants from '../../../common/config';
 import store from '@/store/index.js';
 import { getAuthFromCookie } from '@/utils/cookies.js';
+import * as auth from '@/store/modules/auth/type';
 
 const defaultInstance = instance => {
     instance.interceptors.request.use(
@@ -33,7 +34,8 @@ const authInterceptors = instance => {
         conf => {
             eventBus.$emit('start:spinner');
             conf.headers.Authorization =
-                store.getters['userToken'] || getAuthFromCookie();
+                store.getters[`${auth.NAMESPACE}/${auth.USERTOKEN}`] ||
+                getAuthFromCookie();
             return conf;
         },
         error => {

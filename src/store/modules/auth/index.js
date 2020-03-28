@@ -32,11 +32,11 @@ export default {
         [auth.SET_TOKEN](state, token) {
             state.token = token;
         },
-        [auth.SET_LOGOUT](state, data) {
+        [auth.SET_LOGOUT](state) {
             state.user = null;
             state.token = null;
-            deleteCookie('til_auth');
-            deleteCookie('til_user');
+            deleteCookie('access_auth');
+            deleteCookie('access_user');
         },
         [auth.SET_REGISTER](state, data) {},
     },
@@ -46,13 +46,14 @@ export default {
                 const res = await loginUser(data);
                 commit(auth.SET_USER, res.data.displayName);
                 commit(auth.SET_TOKEN, res.data.accessToken);
-                console.log(res);
                 saveUserToCookie(res.data.displayName);
                 saveAuthToCookie(res.data.accessToken);
             } catch (e) {
                 console.log(e);
             }
         },
-        [auth.FETCH_LOGOUT]({ commit }, data) {},
+        [auth.FETCH_LOGOUT]({ commit }) {
+            commit(auth.SET_LOGOUT);
+        },
     },
 };
