@@ -6,7 +6,9 @@
                 :key="index"
                 :class="item.level ? `blog-menu__level${item.level}` : false"
             >
-                <a :href="`#${item.id}`">{{ item.text }}</a>
+                <button type="button" :value="item.id" @click="directScroll">
+                    {{ item.text }}
+                </button>
             </li>
         </ul>
     </menu>
@@ -15,6 +17,13 @@
 <script>
 export default {
     props: ['headingsInfo'],
+    methods: {
+        directScroll(e) {
+            const val = e.currentTarget.value;
+            const scrollTop = document.getElementById(val).offsetTop;
+            window.scrollTo(0, scrollTop);
+        },
+    },
 };
 </script>
 
@@ -35,12 +44,13 @@ html {
     li {
         list-style: none;
         border-bottom: 1px solid transparentize(#fff, 0.8);
-        a {
-            letter-spacing: -1px;
+        button {
             font-size: 15px;
             display: block;
             padding: 12px 0;
             color: #fff;
+            background: transparent;
+            border: none;
         }
 
         &:last-child {
@@ -55,7 +65,7 @@ html {
         &[class^='blog-menu__level'] {
             font-size: 14px;
             border-bottom: none;
-            a {
+            button {
                 padding: 8px 0;
                 font-weight: normal;
                 font-size: 14px;

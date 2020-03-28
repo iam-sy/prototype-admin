@@ -18,15 +18,15 @@ export default {
         ...authStore.mapActions([auth.FETCH_LOGOUT]),
         logout() {
             this[auth.FETCH_LOGOUT]();
-            this.$router.push('/');
+            this.$router.push({ name: 'home' });
         },
     },
     computed: {
         ...authStore.mapGetters([auth.ISLOGIN]),
     },
     created() {
-        console.log(this);
-        console.log(authStore);
+        //console.log(this);
+        //console.log(authStore);
     },
 };
 </script>

@@ -37,9 +37,9 @@ const scrollLock = (lock, activeCb, inActiveCb) => {
         );
         const scrollTop = getScrollTop();
         const scrollWidth = winHeight < body.clientHeight ? getScrollWidth : 0;
+        document.documentElement.classList.add('screen-lock');
         body.dataset.scrollTop = scrollTop;
         body.style = `margin-top:-${scrollTop}px; padding-right:${scrollWidth}`;
-        document.documentElement.classList.add('screen-lock');
         if (typeof cb === 'function') cb();
         lockSate = true;
     };

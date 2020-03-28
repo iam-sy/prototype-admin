@@ -31,13 +31,17 @@
         </div>
         <div class="blog-list__main">
             <div class="blog-list__list">
-                <ul>
+                <ul v-if="posts.items.length > 0">
                     <li v-for="post in posts.items" :key="post._id">
                         <BlogCard :post="post"></BlogCard>
                     </li>
                 </ul>
+                <div v-else class="blog-list__emtpy">
+                    아직 아무것도 없네요!
+                </div>
             </div>
             <Paging
+                v-if="posts.items.length > 0"
                 @groupChange="changeGroup"
                 @paging="changePaging"
                 :perPage="posts.config.perPage"
@@ -260,6 +264,7 @@ export default {
             margin-left: 30px;
             padding-top: 25px;
             list-style-type: none;
+            top: 0;
         }
     }
     &__search {
@@ -274,6 +279,16 @@ export default {
                 margin-left: 25px;
             }
         }
+    }
+    &__emtpy {
+        padding: 300px 0 100px 0;
+        text-align: center;
+        background: url('~@/assets/bg-empty.png');
+        background-repeat: no-repeat;
+        background-position: 55% center;
+        font-size: 28px;
+        font-weight: 600;
+        color: #8087a0;
     }
     &__more {
         margin: 30px 0;

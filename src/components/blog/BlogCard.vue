@@ -1,5 +1,5 @@
 <template>
-    <router-link :to="`/blog/view/${post._id}`">
+    <router-link :to="`/blog/view/${post._id}`" class="blog-card__link">
         <div class="blog-card">
             <div class="blog-card__thumnail" v-if="post.image">
                 <img :src="addressCompile" alt="" />
@@ -40,6 +40,14 @@ export default {
     overflow: hidden;
     box-shadow: 0 0 10px rgba(108, 108, 108, 0.07);
     min-height: 414px;
+    &__link {
+        position: relative;
+        top: 0;
+        transition: top 0.3s ease-out;
+        &:hover {
+            top: -10px;
+        }
+    }
     &__thumnail {
         position: relative;
         min-height: 182px;

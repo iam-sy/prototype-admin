@@ -12,7 +12,7 @@
         <div class="blog-view__viewer">
             <CodeViewer
                 :desc="postItem.desc"
-                :image="addressCompile"
+                :image="postItem.image"
                 :content="postItem.content"
                 :title="postItem.title"
                 :tags="postItem.tags"
@@ -58,9 +58,6 @@ export default {
         CodeViewer,
     },
     computed: {
-        addressCompile() {
-            return this.postItem.image ? imagePath(this.postItem.image) : '';
-        },
         ...blogStore.mapState({
             postItem: 'postItem',
         }),
@@ -83,9 +80,7 @@ export default {
         },
     },
     created() {
-        const storeId = this.$store.getters[`${blog.NAMESPACE}/${blog.GET_ID}`];
-        if (storeId !== this.$route.params.id)
-            this[blog.FETCH_ITEM](this.$route.params.id);
+        this[blog.FETCH_ITEM](this.$route.params.id);
     },
 };
 </script>

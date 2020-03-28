@@ -1,7 +1,6 @@
 import { fetchPosts, fetchPostById } from '@/api';
 import * as blog from '@/store/modules/blog/type';
-import { parseHeadings } from '@/utils/parser';
-
+import { parseHeadings, imagePath } from '@/utils/parser';
 const postViewInitState = () => {
     return {
         posts: {
@@ -78,6 +77,7 @@ export default {
                 next,
                 prev,
                 headingsInfo: parseHeadings(posts.content),
+                image: imagePath(posts.image),
             };
         },
         [blog.SET_RESET_ITEM](state) {

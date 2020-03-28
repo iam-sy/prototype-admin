@@ -215,11 +215,15 @@ export default {
 <style scoped lang="scss">
 .login {
     padding: 24px;
-    max-width: 350px;
+    min-width: 350px;
     margin: 0 auto;
     border: 1px solid #ececec;
     border-radius: 3px;
     background-color: #fff;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -70%);
 
     h2 {
         font-size: 20px;

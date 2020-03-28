@@ -8,7 +8,7 @@
                 {{ tag }}
             </span>
         </div>
-        <div class="code-viewer__sumnail" v-if="image">
+        <div class="code-viewer__sumnail">
             <img :src="image" />
         </div>
         <div class="code-viewer__desc" v-if="desc">
@@ -45,6 +45,11 @@ export default {
     &__desc,
     &__sumnail {
         padding-bottom: 10px;
+    }
+    &__desc {
+        margin: 30px 0;
+        padding: 30px;
+        background-color: transparentize(#e6e8ef, 0.6);
     }
 }
 </style>

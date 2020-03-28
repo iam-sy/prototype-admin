@@ -1,9 +1,9 @@
 function saveAuthToCookie(value) {
-    document.cookie = `access_auth=${value}`;
+    document.cookie = `access_auth=${value}; path=/;`;
 }
 
 function saveUserToCookie(value) {
-    document.cookie = `access_user=${value}`;
+    document.cookie = `access_user=${value}; path=/;`;
 }
 
 function getAuthFromCookie() {
@@ -14,14 +14,15 @@ function getAuthFromCookie() {
 }
 
 function getUserFromCookie() {
-    return document.cookie.replace(
+    const cookie = document.cookie.replace(
         /(?:(?:^|.*;\s*)access_user\s*=\s*([^;]*).*$)|^.*$/,
         '$1',
     );
+    return cookie;
 }
 
 function deleteCookie(value) {
-    document.cookie = `${value}=; expires=Thu, 01 Jan 1970 00:00:01 GMT;`;
+    document.cookie = `${value}=; path=/; expires=Thu, 01 Jan 1970 00:00:01 GMT;`;
 }
 
 export {

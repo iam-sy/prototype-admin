@@ -109,16 +109,13 @@ section {
     display: block;
     color: inherit;
 }
-html,
-body {
-    height: 100%;
-}
 body {
     line-height: 1;
     background: {
         image: url('~@/assets/M.svg');
         repeat: no-repeat;
         color: #f7f8fb;
+        attachment: fixed;
     }
 }
 blockquote,
@@ -180,10 +177,9 @@ textarea {
     font-size: 12px;
     color: #da3620;
 }
-
 #app {
     margin: 0 auto;
     max-width: 1740px;
-    padding: 0 60px;
+    padding: 0 60px 60px 60px;
 }
 @include button();

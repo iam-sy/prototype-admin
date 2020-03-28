@@ -65,7 +65,6 @@ export default {
     },
 
     mounted() {
-        console.log(this);
         this.$nextTick(function() {
             setTimeout(() => {
                 const $el = document.getElementsByClassName('is-active');

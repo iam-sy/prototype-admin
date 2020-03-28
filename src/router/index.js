@@ -3,7 +3,7 @@ import VueRouter from 'vue-router';
 import store from '@/store';
 import * as blog from '@/store/modules/blog/type';
 import * as auth from '@/store/modules/auth/type';
-import { getUserFromCookie } from '@/utils/cookies';
+import { getAuthFromCookie, getUserFromCookie } from '@/utils/cookies';
 /* components views */
 const LoginPage = () =>
     import(/* webpackChunkName: "loginpage" */ '../views/login/LoginPage.vue');
@@ -19,7 +19,11 @@ const BlogView = () =>
 Vue.use(VueRouter);
 
 function beforeEnter(to, from, next) {
-    if (store.getters['isLoggedIn'] || getUserFromCookie()) {
+    if (
+        store.getters[`${auth.NAMESPACE}/${auth.ISLOGIN}`] ||
+        getUserFromCookie()
+    ) {
+        store.commit(`${auth.NAMESPACE}/${auth.SET_USER}`, getUserFromCookie());
         next();
     } else {
         alert('sign in please');
@@ -30,6 +34,7 @@ function beforeEnter(to, from, next) {
 const routes = [
     {
         path: '/',
+        name: 'home',
         redirect: '/login',
     },
     {
@@ -51,6 +56,10 @@ const routes = [
                 store.getters[`${auth.NAMESPACE}/${auth.ISLOGIN}`] ||
                 getUserFromCookie()
             ) {
+                store.commit(
+                    `${auth.NAMESPACE}/${auth.SET_USER}`,
+                    getUserFromCookie(),
+                );
                 const {
                     config: {
                         perPage,
@@ -114,19 +123,18 @@ const routes = [
                         store.getters[`${auth.NAMESPACE}/${auth.ISLOGIN}`] ||
                         getUserFromCookie()
                     ) {
-                        const storePostItemId =
-                            store.getters[`${blog.NAMESPACE}/${blog.GET_ID}`];
-                        if (storePostItemId === to.params.id) {
-                            next();
-                        } else {
-                            await store.dispatch(
-                                `${blog.NAMESPACE}/${blog.FETCH_ITEM}`,
-                                to.params.id,
-                            );
-                            next();
-                            /*.then()
+                        store.commit(
+                            `${auth.NAMESPACE}/${auth.SET_USER}`,
+                            getUserFromCookie(),
+                        );
+
+                        await store.dispatch(
+                            `${blog.NAMESPACE}/${blog.FETCH_ITEM}`,
+                            to.params.id,
+                        );
+                        next();
+                        /*.then()
                                 .catch(() => new Error('FETCH_VIEW error'));*/
-                        }
                     } else {
                         alert('sign in please');
                         next('/login');

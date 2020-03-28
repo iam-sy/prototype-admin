@@ -1,25 +1,34 @@
 <template>
     <div id="app">
-        <Gnb></Gnb>
+        <Gnb v-if="ISLOGIN"></Gnb>
         <router-view :key="$route.fullPath" />
+        <Footer></Footer>
         <Dimed></Dimed>
         <Spinner :loading="LoadingStatus"></Spinner>
     </div>
 </template>
 
 <script>
-import Gnb from '@/components/layout/Gnb.vue';
-import { mapGetters, mapMutations } from 'vuex';
 import eventBus from '@/utils/eventBus';
+
+import Gnb from '@/components/layout/Gnb.vue';
+import Footer from '@/components/layout/Footer.vue';
+
+import * as auth from '@/store/modules/auth/type';
+import { createNamespacedHelpers } from 'vuex';
+const authStore = createNamespacedHelpers(`${auth.NAMESPACE}`);
 export default {
-    ...mapMutations(['LOADING_TOGGLE']),
     components: {
         Gnb,
+        Footer,
     },
     data() {
         return {
             LoadingStatus: false,
         };
+    },
+    computed: {
+        ...authStore.mapGetters([auth.ISLOGIN]),
     },
     methods: {
         startSpinner() {

@@ -19,7 +19,7 @@ export default {
     state: authInitState,
     getters: {
         [auth.ISLOGIN](state) {
-            return !!state.token || getUserFromCookie();
+            return !!state.token || getUserFromCookie() === state.user;
         },
         [auth.USERTOKEN](state) {
             return state.token;
