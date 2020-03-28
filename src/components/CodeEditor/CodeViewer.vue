@@ -8,7 +8,7 @@
                 {{ tag }}
             </span>
         </div>
-        <div class="code-viewer__sumnail">
+        <div class="code-viewer__sumnail" v-if="image">
             <img :src="image" />
         </div>
         <div class="code-viewer__desc" v-if="desc">

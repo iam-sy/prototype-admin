@@ -77,7 +77,7 @@ export default {
                 next,
                 prev,
                 headingsInfo: parseHeadings(posts.content),
-                image: imagePath(posts.image),
+                image: posts.image !== '' ? imagePath(posts.image) : '',
             };
         },
         [blog.SET_RESET_ITEM](state) {

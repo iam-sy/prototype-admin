@@ -41,7 +41,7 @@
                 </div>
             </div>
             <Paging
-                v-if="posts.items.length > 0"
+                v-if="posts.config.totalPage > 1"
                 @groupChange="changeGroup"
                 @paging="changePaging"
                 :perPage="posts.config.perPage"
