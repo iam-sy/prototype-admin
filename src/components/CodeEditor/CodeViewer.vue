@@ -37,7 +37,7 @@ export default {
         display: table;
         font-size: 0;
         width: 100%;
-        padding-bottom: 15px;
+        padding: 10px 0 15px 0;
         span {
             @include tagItem();
         }

@@ -15,6 +15,8 @@ const BlogModify = () =>
     import(/* webpackChunkName: "blogmodify" */ '../views/blog/BlogModify.vue');
 const BlogView = () =>
     import(/* webpackChunkName: "blogview" */ '../views/blog/BlogView.vue');
+const NotFound = () =>
+    import(/* webpackChunkName: "notfound" */ '../views/NotFound.vue');
 
 Vue.use(VueRouter);
 
@@ -142,6 +144,15 @@ const routes = [
                 },
             },
         ],
+    },
+    {
+        path: '/404',
+        name: '404',
+        component: NotFound,
+    },
+    {
+        path: '*',
+        redirect: '/404',
     },
 ];
 const router = new VueRouter({

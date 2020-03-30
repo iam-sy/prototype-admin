@@ -2,7 +2,13 @@ var path = require('path');
 const ansiRegex = require('ansi-regex');
 
 module.exports = {
-    outputDir: path.resolve(__dirname, '../prototype-blog-backend/public/'),
+    outputDir: path.resolve(
+        __dirname,
+        '../prototype-blog-backend/public',
+        //'../prototype-blog-backend/public/manager',
+    ),
+    //publicPath: '/front',
+    //publicPath: '/manager',
     css: {
         loaderOptions: {
             sass: {
