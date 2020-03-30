@@ -36,17 +36,20 @@ html {
 
 <style scoped lang="scss">
 .blog-menu {
+    width: 240px;
     scroll-behavior: smooth;
     overscroll-behavior: contain none;
-    background-color: transparentize($color1, 0.1);
+    background-color: transparentize($color1, 0.2);
     padding: 20px;
     border-radius: 4px;
     li {
         list-style: none;
         border-bottom: 1px solid transparentize(#fff, 0.8);
         button {
+            text-align: left;
             font-size: 15px;
             display: block;
+            line-height: 1.5;
             padding: 12px 0;
             color: #fff;
             background: transparent;
