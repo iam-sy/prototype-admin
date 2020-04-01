@@ -1,10 +1,11 @@
 var path = require('path');
 const ansiRegex = require('ansi-regex');
+console.log(process.env.NODE_ENV);
 
 module.exports = {
     outputDir: path.resolve(
         __dirname,
-        '../prototype-blog-backend/public',
+        process.env.DIST,
         //'../prototype-blog-backend/public/manager',
     ),
     //publicPath: '/front',

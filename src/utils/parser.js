@@ -13,7 +13,7 @@ import 'prismjs/components/prism-twig.min';
 import 'prismjs/components/prism-tsx.min';
 
 const imagePath = path => {
-    const url = `${constants.apiAdress}/${path}`;
+    const url = `${process.env.VUE_APP_API_ADDRESS}/${path}`;
     return url;
 };
 

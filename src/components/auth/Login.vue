@@ -125,7 +125,7 @@ export default {
         return {
             mode: 'login',
             email: 'xlrj0716@gmail.com',
-            password: '!xlrj1215',
+            password: '!moon1215',
             name: 'moon',
             logMessage: '',
         };
@@ -208,6 +208,9 @@ export default {
                 this.resetForm();
             });
         },
+    },
+    mounted() {
+        console.log(process.env);
     },
 };
 </script>

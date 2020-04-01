@@ -68,6 +68,6 @@ function createWithAuth(url, options) {
     return instance;
 }
 
-const axiosApi = create(constants.apiAdress);
-const axiosApiAuth = createWithAuth(constants.apiAdress);
+const axiosApi = create(process.env.VUE_APP_API_ADDRESS);
+const axiosApiAuth = createWithAuth(process.env.VUE_APP_API_ADDRESS);
 export { axiosApi, axiosApiAuth };

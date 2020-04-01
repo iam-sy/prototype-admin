@@ -20,7 +20,7 @@ export function uploadImage(simplemde, params) {
                     continue;
                 }
                 const path = resData.destination.replace('public/', '');
-                let url = `![](${constants.apiAdress}/${path}/${resData.filename})`;
+                let url = `![](${process.env.VUE_APP_API_ADDRESS}/${path}/${resData.filename})`;
                 if (simplemde) {
                     let content = simplemde.value();
                     simplemde.value(content + url + '\n');
