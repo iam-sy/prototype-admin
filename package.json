@@ -6,13 +6,16 @@
         "adminserve": "vue-cli-service serve --port 4444 --mode development",
         "build:dev": "vue-cli-service build --mode deploy",
         "build": "vue-cli-service build --mode production",
-        "lint": "vue-cli-service lint"
+        "lint": "vue-cli-service lint",
+        "start": "node server.js"
     },
     "dependencies": {
         "ansi-regex": "^5.0.0",
         "axios": "^0.19.2",
+        "connect-history-api-fallback": "^1.6.0",
         "core-js": "^3.6.4",
         "es6-promise": "^4.2.8",
+        "express": "^4.17.1",
         "marked": "^0.8.0",
         "mkdirp": "^1.0.3",
         "path": "^0.12.7",

@@ -88,6 +88,7 @@
                     </button>
                 </form>
             </ValidationObserver>
+            <!-- 회원등급 처리 후 활성화
             <div class="login__utils">
                 <button
                     type="button"
@@ -109,6 +110,7 @@
                     {{ logMessage }}
                 </div>
             </div>
+            -->
         </div>
     </div>
 </template>
@@ -124,9 +126,9 @@ export default {
     data() {
         return {
             mode: 'login',
-            email: 'xlrj0716@gmail.com',
-            password: '!moon1215',
-            name: 'moon',
+            email: '',
+            password: '',
+            name: '',
             logMessage: '',
         };
     },
@@ -218,7 +220,8 @@ export default {
 <style scoped lang="scss">
 .login {
     padding: 24px;
-    min-width: 350px;
+    max-width: 350px;
+    width: 100%;
     margin: 0 auto;
     border: 1px solid #ececec;
     border-radius: 3px;
