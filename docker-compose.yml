@@ -1,0 +1,34 @@
+version: '2'
+
+services:
+
+  nginx:
+    build:
+      context: .
+      dockerfile: .docker/nginx.dockerfile
+    depends_on:
+      - admin
+    ports:
+      - "80:8080"
+    networks:
+      - app-network
+
+  admin:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    working_dir: /app
+    volumes:
+      - .:/app
+    ports:
+      - "3000"
+    environment:
+      - PORT=3000
+      - INSTANCE=admin
+    networks:
+      - app-network
+
+
+networks:
+    app-network:
+      driver: bridge
