@@ -2,33 +2,38 @@ version: '2'
 
 services:
 
-  nginx:
-    build:
-      context: .
-      dockerfile: .docker/nginx.dockerfile
-    depends_on:
-      - admin
-    ports:
-      - "80:8080"
-    networks:
-      - app-network
+  # nginx:
+  #   build:
+  #     context: .
+  #     dockerfile: .docker/nginx.dockerfile
+  #   depends_on:
+  #     - admin
+  #   environment:
+  #     - VIRTUAL_HOST=prototype-admin.iammoon.xyz
+  #   ports:
+  #     - "9998:8080"
+  #   networks:
+  #     - app-network
 
   admin:
+    container_name: admin_web_site
     build:
       context: .
       dockerfile: Dockerfile
     working_dir: /app
-    volumes:
-      - .:/app
+    #volumes:
+    #  - .:/app
     ports:
       - "3000"
     environment:
-      - PORT=3000
+      #- PORT=3000
       - INSTANCE=admin
+      - VIRTUAL_HOST=prototype-admin.iammoon.xyz
     networks:
       - app-network
 
 
 networks:
-    app-network:
-      driver: bridge
+  app-network:
+    external:
+      name: nginx-proxy
