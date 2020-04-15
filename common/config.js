@@ -1,7 +1,7 @@
 module.exports = {
     //clientAddress: 'http://localhost:1111',
     //apiAdress: 'http://localhost:2222',
-    apiAdress: 'http://prototype-back.iammoon.xyz',
+    apiAdress: 'https://prototype-back.iammoon.xyz',
     /* mongodb: {
         url: 'mongodb://localhost:27017/koler', //  mongodb连接地址
         user: '', // mongodb账户名
