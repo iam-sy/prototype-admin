@@ -27,16 +27,22 @@ export default {};
     background-position-x: right;
     background-position-y: top;
     background-repeat: no-repeat;
-    height: 200px;
-    margin-top: -100px;
-    position: fixed;
+    position: relative;
     opacity: 0.5;
+
     &__content {
         vertical-align: bottom;
         display: block;
         max-width: 1740px;
-        padding: 58px 60px;
+        padding: 20px 0;
         margin: 0 auto;
+        @include breakpoint($point: tablet) {
+            max-width: none;
+            display: table;
+            width: 100%;
+            text-align: center;
+            padding: 20px 30px;
+        }
     }
     &__info {
         display: inline-block;

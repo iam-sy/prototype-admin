@@ -1,3 +1,6 @@
+@import "~@/scss/variables/_variables.scss";
+@import "~@/scss/mixins/responsive/_breakpoint.scss";
+
 @mixin input($fz: 32px) {
     font-family: 'Noto Sans KR';
     font-size: $fz;

@@ -180,6 +180,31 @@ textarea {
 #app {
     margin: 0 auto;
     max-width: 1740px;
+    min-width: 360px;
     padding: 0 60px 60px 60px;
+    transition: padding, max-width 0.5s ease-out;
+
+    @include respond-between(1410px, 1740px) {
+        max-width: 1410px;
+        margin: 0 auto;
+        transition: padding, max-width 0.5s ease-out;
+    }
+
+    @include respond-between(1080px, 1410px) {
+        max-width: 1080px;
+        margin: 0 auto;
+        transition: padding, max-width 0.5s ease-out;
+    }
+
+    @include respond-between(690px, 1080px) {
+        max-width: 750px;
+        margin: 0 auto;
+        transition: padding, max-width 0.5s ease-out;
+    }
+
+    @include breakpoint($point: tablet) {
+        padding: 0 30px 30px 30px;
+        transition: padding, max-width 0.5s ease-out;
+    }
 }
 @include button();

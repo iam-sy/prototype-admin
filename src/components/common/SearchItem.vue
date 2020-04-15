@@ -28,5 +28,13 @@ export default {
         color: #fff;
         font-size: 13px;
     }
+
+    @include breakpoint($point: mobile-l) {
+        margin-top: 10px;
+        margin-left: 0;
+        &:not(:first-child) {
+            margin-left: 10;
+        }
+    }
 }
 </style>

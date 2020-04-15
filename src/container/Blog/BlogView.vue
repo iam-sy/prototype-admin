@@ -99,6 +99,10 @@ export default {
         menu {
             position: fixed;
         }
+
+        @include respond-below(1410px) {
+            display: none;
+        }
     }
     &__sec {
         padding-bottom: 20px;
@@ -107,6 +111,9 @@ export default {
         font-size: 14px;
         font-weight: 500;
         color: $color6;
+    }
+    &__viewer {
+        margin-bottom: 30px;
     }
     &__date {
         font-family: 'Noto Sans KR';
@@ -118,6 +125,10 @@ export default {
         right: -338px;
         width: 280px;
         top: 127px;
+
+        @include respond-below(1410px) {
+            display: none;
+        }
     }
 }
 </style>

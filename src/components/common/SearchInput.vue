@@ -61,6 +61,10 @@ export default {
 .search {
     display: inline-block;
     position: relative;
+
+    @include breakpoint($point: mobile-l) {
+        display: block;
+    }
     label {
         font-family: 'Noto Sans KR';
         font-weight: 500;
@@ -74,6 +78,10 @@ export default {
         border: 1px solid transparentize(#000, 0.8);
         border-radius: 15px;
         padding: 0 30px 0 10px;
+
+        @include breakpoint($point: mobile-l) {
+            width: 100%;
+        }
     }
     button {
         position: absolute;

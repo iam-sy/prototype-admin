@@ -176,7 +176,7 @@ export default {
 
 <style scoped lang="scss">
 .board-write {
-    padding: 30px 60px;
+    padding: 30px 0;
     display: flex;
     height: calc(100vh - 56px);
     flex-direction: column;
@@ -203,6 +203,10 @@ export default {
     &__editor,
     &__preview {
         width: 50%;
+
+        @include respond-below(1080px) {
+            width: 100%;
+        }
     }
     &__sumnail {
         padding-bottom: 10px;
@@ -225,6 +229,10 @@ export default {
         margin-left: 30px;
         height: 100%;
         overflow: auto;
+
+        @include respond-below(1080px) {
+            display: none;
+        }
     }
     &__control {
         margin-top: auto;

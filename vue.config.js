@@ -1,6 +1,5 @@
 var path = require('path');
 const ansiRegex = require('ansi-regex');
-console.log(process.env.NODE_ENV);
 
 module.exports = {
     outputDir: path.resolve(
@@ -14,7 +13,6 @@ module.exports = {
         loaderOptions: {
             sass: {
                 prependData: `
-                    @import "@/scss/variables/_variables.scss";
                     @import "@/scss/mixins/_mixins.scss";
                 `,
             },

@@ -230,6 +230,12 @@ export default {
     left: 50%;
     top: 50%;
     transform: translate(-50%, -70%);
+    transition: transform 0.5s ease-out;
+
+    @include breakpoint($point: tablet) {
+        transform: translate(-50%, -50%);
+        transition: transform 0.5s ease-out;
+    }
 
     h2 {
         font-size: 20px;

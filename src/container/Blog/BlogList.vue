@@ -243,7 +243,7 @@ export default {
 
 <style scoped lang="scss">
 .blog-list {
-    padding: 25px 0 30px;
+    padding: 25px 0 0;
     &__main {
         position: relative;
     }
@@ -256,6 +256,11 @@ export default {
             //display: grid;
             //grid-template-columns: repeat(auto-fill, minmax(290px, 1fr));
             //grid-gap: 30px 26px;
+
+            @include breakpoint($point: mobile-l) {
+                justify-content: space-around;
+                margin-left: 0;
+            }
         }
         li {
             flex: none;
@@ -265,6 +270,15 @@ export default {
             padding-top: 25px;
             list-style-type: none;
             top: 0;
+            @include breakpoint($point: tablet) {
+                width: calc(50% - 30px);
+                max-width: none;
+            }
+            @include breakpoint($point: mobile-l) {
+                width: 100%;
+                margin-left: 0;
+                max-width: none;
+            }
         }
     }
     &__search {
@@ -278,20 +292,36 @@ export default {
             &:not(:first-child) {
                 margin-left: 25px;
             }
+
+            @include breakpoint($point: mobile-l) {
+                display: block;
+
+                &:not(:first-child) {
+                    margin-top: 10px;
+                    margin-left: 0;
+                }
+            }
         }
     }
     &__emtpy {
+        margin-top: 20px;
         padding: 300px 0 100px 0;
         text-align: center;
         background: url('~@/assets/bg-empty.png');
         background-repeat: no-repeat;
         background-position: 55% center;
+        background-size: contain;
         font-size: 28px;
         font-weight: 600;
         color: #8087a0;
+        @include breakpoint($point: mobile-l) {
+            padding-top: 50%;
+            background-position: top center;
+            padding-bottom: 50px;
+        }
     }
     &__more {
-        margin: 30px 0;
+        margin: 30px 0 0 0;
         text-align: center;
     }
 }

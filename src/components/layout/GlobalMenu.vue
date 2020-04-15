@@ -40,11 +40,17 @@ export default {
         font-weight: 600;
         font-size: 30px;
         letter-spacing: -1px;
+
+        @include breakpoint($point: tablet) {
+            display: none;
+        }
     }
     &__utils {
         position: absolute;
         top: -30px;
         right: 0;
+        transition: top 0.5s ease-out;
+
         button {
             background: $color1;
             border: none;
@@ -55,6 +61,11 @@ export default {
                 padding: 3px 10px;
                 font-size: 12px;
             }
+        }
+
+        @include breakpoint($point: tablet) {
+            top: 0;
+            transition: top 0.5s ease-out;
         }
     }
 }
