@@ -30,13 +30,20 @@ export default {};
     position: relative;
     opacity: 0.5;
 
+    @at-root .login + & {
+        position: relative;
+        left: 0;
+        transform: none;
+        text-align: center;
+    }
+
     &__content {
         vertical-align: bottom;
         display: block;
         max-width: 1740px;
         padding: 20px 0;
         margin: 0 auto;
-        @include breakpoint($point: tablet) {
+        @include breakpoint($point: desktop-l) {
             max-width: none;
             display: table;
             width: 100%;

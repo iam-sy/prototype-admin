@@ -222,21 +222,11 @@ export default {
     padding: 24px;
     max-width: 350px;
     width: 100%;
-    margin: 0 auto;
     border: 1px solid #ececec;
     border-radius: 3px;
     background-color: #fff;
-    position: absolute;
-    left: 50%;
-    top: 50%;
-    transform: translate(-50%, -70%);
-    transition: transform 0.5s ease-out;
-
-    @include breakpoint($point: tablet) {
-        transform: translate(-50%, -50%);
-        transition: transform 0.5s ease-out;
-    }
-
+    position: relative;
+    margin: 15% auto 100px auto;
     h2 {
         font-size: 20px;
         display: block;
